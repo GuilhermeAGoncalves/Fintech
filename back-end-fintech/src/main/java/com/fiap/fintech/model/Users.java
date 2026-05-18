@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Users {
 
-
     @Id
     @Column(name = "USERID", nullable = false)
     @GeneratedValue(strategy = GenerationType.UUID)
