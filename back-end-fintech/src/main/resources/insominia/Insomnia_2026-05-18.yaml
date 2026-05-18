@@ -1,0 +1,80 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: Fintech-api
+meta:
+  id: wrk_057a60e1bdca4a0cb419e9d2161c6d61
+  created: 1779077052249
+  modified: 1779077052249
+  description: ""
+collection:
+  - url: http://localhost:8080/api/users
+    name: Criar usuario api/users
+    meta:
+      id: req_12edd31c8a8b4d7fa21d2c1df54202fa
+      created: 1779077061303
+      modified: 1779077340409
+      isPrivate: false
+      description: ""
+      sortKey: -1779077061303
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "Guilherme Araújo",
+          "email": "guilherme@email.com",
+          "password": "senhaSegura123"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.5.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/users
+    name: Recuperar todos os usuarios
+    meta:
+      id: req_1e7e743b64b9487d8c705b63169394e5
+      created: 1779077290637
+      modified: 1779077348185
+      isPrivate: false
+      description: ""
+      sortKey: -1779077290637
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.5.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_ea5275d63684078773bb822f3b38701b64e1a7e2
+    created: 1779077052251
+    modified: 1779077052251
+environments:
+  name: Base Environment
+  meta:
+    id: env_ea5275d63684078773bb822f3b38701b64e1a7e2
+    created: 1779077052250
+    modified: 1779077489296
+    isPrivate: false
+  data:
+    BASE_URL: ""
