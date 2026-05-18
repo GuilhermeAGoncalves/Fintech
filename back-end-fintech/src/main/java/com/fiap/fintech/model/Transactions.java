@@ -1,7 +1,9 @@
 package com.fiap.fintech.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -13,6 +15,8 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "FT_TRANSACTIONS")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Transactions {
     @Id
     @Column(name = "TRANSACTIONID", nullable = false)
@@ -44,10 +48,5 @@ public class Transactions {
 
     @Column(name = "STATUS", nullable = false, length = 10)
     private String status;
-
-    @Lob
-    @Column(name = "NOTES")
-    private String notes;
-
 
 }
