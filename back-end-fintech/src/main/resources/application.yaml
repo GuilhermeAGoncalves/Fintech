@@ -3,7 +3,7 @@ spring:
     name: "fintech-api"
 
   datasource:
-    url: jdbc:oracle:thin:@oracle.fiap.com.br:1521/ORCL
+    url: jdbc:oracle:thin:@${DB_HOST}:${DB_PORT}/${DB_SID}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: oracle.jdbc.OracleDriver
