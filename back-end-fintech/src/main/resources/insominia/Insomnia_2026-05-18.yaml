@@ -63,6 +63,60 @@ collection:
         send: true
         store: true
       rebuildPath: true
+                     - url: http://localhost:8080/api/accounts/{userid}
+                     name: Criar conta api/accounts
+                     meta:
+                       id: req_accounts_post
+                       created: 1779077400000
+                       modified: 1779077400000
+                       isPrivate: false
+                       description: ""
+                       sortKey: -1779077400000
+                     method: POST
+                     body:
+                       mimeType: application/json
+                       text: |-
+                         {
+                           "name": "Conta Corrente",
+                           "initialBalance": 1000.00,
+                           "accountType": "CORRENTE",
+                           "color": "blue",
+                           "isActive": true
+                         }
+                     headers:
+                       - name: Content-Type
+                         value: application/json
+                       - name: User-Agent
+                         value: insomnia/12.5.0
+                     settings:
+                       renderRequestBody: true
+                       encodeUrl: true
+                       followRedirects: global
+                       cookies:
+                         send: true
+                         store: true
+                       rebuildPath: true
+                         - url: http://localhost:8080/api/accounts/{userid}
+                           name: Buscar contas por usuario
+                           meta:
+                             id: req_accounts_get
+                             created: 1779077500000
+                             modified: 1779077500000
+                             isPrivate: false
+                             description: ""
+                             sortKey: -1779077500000
+                           method: GET
+                           headers:
+                             - name: User-Agent
+                               value: insomnia/12.5.0
+                           settings:
+                             renderRequestBody: true
+                             encodeUrl: true
+                             followRedirects: global
+                             cookies:
+                               send: true
+                               store: true
+                             rebuildPath: true
 cookieJar:
   name: Default Jar
   meta:
