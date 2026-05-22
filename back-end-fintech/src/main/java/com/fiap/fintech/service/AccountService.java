@@ -31,4 +31,23 @@ public class AccountService {
         account.setUser(user);
         return accountsRepository.save(account);
     }
+    @Transactional
+    public Accounts updateAccount(String accountId, Accounts account) {
+        Accounts existing = accountsRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+        existing.setName(account.getName());
+        existing.setInitialBalance(account.getInitialBalance());
+        existing.setAccountType(account.getAccountType());
+        existing.setColor(account.getColor());
+        existing.setIsActive(account.getIsActive());
+        return accountsRepository.save(existing);
+    }
+
+    @Transactional
+    public void deleteAccount(String accountId) {
+        if (!accountsRepository.existsById(accountId)) {
+            throw new IllegalArgumentException("Account not found");
+        }
+        accountsRepository.deleteById(accountId);
+    }
 }
