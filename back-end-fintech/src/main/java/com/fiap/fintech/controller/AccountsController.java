@@ -31,4 +31,23 @@ public class AccountsController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    @PutMapping("/{accountId}")
+    public ResponseEntity<?> updateAccount(@PathVariable String accountId, @RequestBody Accounts account) {
+        try {
+            Accounts updated = accountService.updateAccount(accountId, account);
+            return ResponseEntity.ok(updated);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{accountId}")
+    public ResponseEntity<?> deleteAccount(@PathVariable String accountId) {
+        try {
+            accountService.deleteAccount(accountId);
+            return ResponseEntity.ok("Account deleted successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
