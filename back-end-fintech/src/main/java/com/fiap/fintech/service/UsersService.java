@@ -4,20 +4,18 @@ package com.fiap.fintech.service;
 import com.fiap.fintech.model.Users;
 import com.fiap.fintech.repository.UsersRepository;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class UsersService {
 
     private final UsersRepository usersRepository;
-
-    public UsersService(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
-    }
 
     public List<Users> getAllUsers() {
         return usersRepository.findAll();
@@ -33,6 +31,10 @@ public class UsersService {
             throw new IllegalArgumentException("Email already exists");
         }
         return usersRepository.save(user);
+    }
+
+    public Boolean validateUserExist(String userId) {
+        return usersRepository.existsById(userId);
     }
 
 }

@@ -2,18 +2,16 @@ package com.fiap.fintech.service;
 
 import com.fiap.fintech.model.Categories;
 import com.fiap.fintech.repository.CategoriesRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Service
 public class CategoriesService {
 
     private final CategoriesRepository categoryRepository;
-
-    public CategoriesService(CategoriesRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
 
     public List<Categories> getAllCategories() {
         return categoryRepository.findAll();

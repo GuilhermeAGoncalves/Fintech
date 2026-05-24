@@ -2,6 +2,7 @@ package com.fiap.fintech.controller;
 
 import com.fiap.fintech.model.Accounts;
 import com.fiap.fintech.service.AccountService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,13 +10,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/accounts")
+@AllArgsConstructor
 public class AccountsController {
 
     private final AccountService accountService;
-
-    public AccountsController(AccountService accountService) {
-        this.accountService = accountService;
-    }
 
     @GetMapping("/{userid}")
     public ResponseEntity<List<Accounts>> getAccountsByUser(@PathVariable String userid) {
