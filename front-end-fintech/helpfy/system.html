@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HelpFy — Sistema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.985 0.008 95);
+    --surface: oklch(0.975 0.01 95);
+    --surface-2: oklch(0.96 0.012 95);
+    --surface-3: oklch(0.94 0.012 95);
+    --ink: oklch(0.18 0.02 240);
+    --ink-2: oklch(0.36 0.02 240);
+    --ink-3: oklch(0.55 0.02 240);
+    --ink-4: oklch(0.72 0.02 240);
+    --border: oklch(0.9 0.008 95);
+    --border-strong: oklch(0.84 0.01 95);
+    --accent: oklch(0.62 0.15 155);
+    --accent-2: oklch(0.55 0.16 155);
+    --accent-ink: oklch(0.99 0.005 155);
+    --accent-soft: oklch(0.93 0.05 155);
+    --danger: oklch(0.62 0.18 25);
+    --danger-soft: oklch(0.95 0.03 25);
+    --warn: oklch(0.72 0.14 75);
+    --warn-soft: oklch(0.95 0.04 75);
+    --info: oklch(0.58 0.16 250);
+    --info-soft: oklch(0.94 0.04 250);
+    --radius: 14px;
+    --radius-lg: 22px;
+    --shadow-sm: 0 1px 0 oklch(0.18 0.02 240 / 0.04), 0 1px 2px oklch(0.18 0.02 240 / 0.04);
+    --shadow-md: 0 4px 8px -2px oklch(0.18 0.02 240 / 0.06), 0 12px 24px -6px oklch(0.18 0.02 240 / 0.08);
+    --shadow-lg: 0 12px 32px -8px oklch(0.18 0.02 240 / 0.18), 0 32px 64px -16px oklch(0.18 0.02 240 / 0.16);
+    --sidebar-w: 248px;
+    --header-h: 64px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 14.5px;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: 'ss01';
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+  .serif { font-family: 'Instrument Serif', serif; font-weight: 400; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* ============ LOGIN ============ */
+  .login {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+  }
+  .login-side {
+    background: oklch(0.17 0.025 240);
+    color: oklch(0.96 0.008 95);
+    padding: 40px 56px;
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+  }
+  .login-side::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(50% 60% at 100% 0%, color-mix(in oklch, var(--accent) 28%, transparent), transparent 60%),
+      radial-gradient(40% 50% at 0% 100%, color-mix(in oklch, var(--accent) 14%, transparent), transparent 60%);
+  }
+  .login-side > * { position: relative; z-index: 1; }
+  .login-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 800; font-size: 19px; letter-spacing: -0.02em;
+  }
+  .login-logo .mark {
+    width: 32px; height: 32px; border-radius: 9px;
+    background: oklch(0.96 0.008 95); color: oklch(0.17 0.025 240);
+    display: grid; place-items: center; font-weight: 800;
+    position: relative;
+  }
+  .login-logo .mark::after {
+    content: ""; position: absolute; right: -3px; bottom: -3px;
+    width: 12px; height: 12px; border-radius: 4px;
+    background: var(--accent);
+    border: 2px solid oklch(0.17 0.025 240);
+  }
+  .login-quote { margin: auto 0; }
+  .login-eyebrow {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.14em;
+    font-weight: 600; color: oklch(0.78 0.13 155);
+    margin-bottom: 18px;
+  }
+  .login-quote h1 {
+    font-size: 56px; line-height: 1.02; letter-spacing: -0.035em;
+    font-weight: 700; margin: 0 0 24px;
+  }
+  .login-quote h1 em {
+    font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400;
+    color: oklch(0.82 0.16 155);
+  }
+  .login-quote p { font-size: 17px; color: oklch(0.78 0.02 95); max-width: 460px; line-height: 1.5; }
+  .login-feats { display: flex; flex-direction: column; gap: 14px; margin-top: 32px; }
+  .login-feat { display: flex; align-items: center; gap: 14px; font-size: 14.5px; color: oklch(0.82 0.015 95); }
+  .login-feat .check {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: oklch(0.78 0.13 155 / 0.2); color: oklch(0.82 0.16 155);
+    display: grid; place-items: center; flex-shrink: 0;
+  }
+  .login-foot {
+    display: flex; justify-content: space-between;
+    font-size: 13px; color: oklch(0.65 0.02 95);
+  }
+  .login-form {
+    display: flex; flex-direction: column;
+    padding: 40px 56px;
+    justify-content: center;
+    max-width: 560px; width: 100%; justify-self: center;
+  }
+  .login-form-inner { max-width: 400px; width: 100%; margin: 0 auto; }
+  .login-form h2 { font-size: 32px; letter-spacing: -0.025em; margin: 0 0 8px; font-weight: 700; }
+  .login-form .sub { color: var(--ink-2); margin: 0 0 32px; font-size: 15px; }
+  .login-tabs {
+    display: flex; gap: 4px; padding: 4px;
+    background: var(--surface-2); border-radius: 100px; margin-bottom: 28px;
+    border: 1px solid var(--border);
+  }
+  .login-tab {
+    flex: 1; padding: 9px 18px; border-radius: 100px;
+    font-size: 14px; font-weight: 600; color: var(--ink-3); transition: all 0.15s;
+  }
+  .login-tab.active { background: var(--bg); color: var(--ink); box-shadow: var(--shadow-sm); }
+  .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+  .field-label { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+  .field-input-wrap { position: relative; display: flex; align-items: center; }
+  .field-input {
+    width: 100%; padding: 13px 16px;
+    background: var(--bg); border: 1px solid var(--border-strong);
+    border-radius: 12px; font-size: 14.5px; font-family: inherit; color: var(--ink);
+    transition: all 0.15s;
+  }
+  .field-input:focus {
+    outline: none; border-color: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in oklch, var(--accent) 14%, transparent);
+  }
+  .field-eye {
+    position: absolute; right: 12px;
+    width: 28px; height: 28px; border-radius: 6px;
+    color: var(--ink-3); display: grid; place-items: center;
+  }
+  .field-eye:hover { background: var(--surface-2); color: var(--ink-2); }
+  .login-options {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; margin-bottom: 24px;
+  }
+  .checkbox { display: flex; align-items: center; gap: 8px; color: var(--ink-2); cursor: pointer; }
+  .checkbox input { width: 16px; height: 16px; accent-color: var(--accent); }
+  .login-forgot { color: var(--accent); font-weight: 600; }
+  .login-submit {
+    width: 100%; padding: 14px;
+    background: var(--ink); color: var(--bg);
+    border-radius: 12px; font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: all 0.15s;
+  }
+  .login-submit:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .login-submit:disabled { opacity: 0.7; transform: none; cursor: wait; }
+  .login-divider {
+    display: flex; align-items: center; gap: 14px;
+    color: var(--ink-3); font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em; margin: 28px 0;
+  }
+  .login-divider::before, .login-divider::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  .oauth-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .oauth {
+    padding: 11px 12px; background: var(--bg); border: 1px solid var(--border-strong);
+    border-radius: 12px; font-weight: 600; font-size: 14px;
+    display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--ink);
+  }
+  .oauth:hover { background: var(--surface-2); }
+  .login-cta-foot { margin-top: 28px; font-size: 14px; color: var(--ink-2); text-align: center; }
+  .login-cta-foot a { color: var(--accent); font-weight: 600; cursor: pointer; }
+
+  /* ============ APP LAYOUT ============ */
+  .app {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    grid-template-rows: var(--header-h) 1fr;
+    grid-template-areas: "sidebar header" "sidebar main";
+    height: 100vh;
+  }
+  .sidebar {
+    grid-area: sidebar; background: var(--surface);
+    border-right: 1px solid var(--border); padding: 18px 14px;
+    display: flex; flex-direction: column; overflow-y: auto;
+  }
+  .side-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 800; font-size: 17px; letter-spacing: -0.02em;
+    padding: 6px 10px 18px;
+  }
+  .side-logo .mark {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--ink); color: var(--bg);
+    display: grid; place-items: center; font-weight: 800; font-size: 14px;
+    position: relative;
+  }
+  .side-logo .mark::after {
+    content: ""; position: absolute; right: -2px; bottom: -2px;
+    width: 10px; height: 10px; border-radius: 3px;
+    background: var(--accent); border: 2px solid var(--surface);
+  }
+  .side-section {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    font-weight: 700; color: var(--ink-4); padding: 18px 10px 8px;
+  }
+  .side-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 10px; border-radius: 10px;
+    font-size: 14px; font-weight: 500; color: var(--ink-2);
+    margin-bottom: 2px; transition: all 0.12s; width: 100%; text-align: left;
+  }
+  .side-item:hover { background: var(--surface-2); color: var(--ink); }
+  .side-item.active { background: var(--ink); color: var(--bg); }
+  .side-item .side-ico { width: 18px; height: 18px; color: var(--ink-3); }
+  .side-item.active .side-ico { color: var(--bg); }
+  .side-item .badge {
+    margin-left: auto; background: var(--accent); color: var(--accent-ink);
+    font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 100px;
+  }
+  .side-item.active .badge { background: oklch(0.96 0.008 95 / 0.2); color: var(--bg); }
+  .side-bottom { margin-top: auto; padding-top: 18px; border-top: 1px solid var(--border); }
+  .side-profile {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px; border-radius: 12px; background: var(--surface-2);
+  }
+  .side-profile .avatar {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: var(--accent); color: var(--accent-ink);
+    display: grid; place-items: center; font-weight: 700; font-size: 14px; flex-shrink: 0;
+  }
+  .side-profile .who { flex: 1; min-width: 0; }
+  .side-profile .name { font-size: 13.5px; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .side-profile .plan { font-size: 11px; color: var(--ink-3); }
+  .side-profile button { color: var(--ink-3); padding: 4px; }
+
+  .header {
+    grid-area: header; border-bottom: 1px solid var(--border);
+    padding: 0 28px; display: flex; align-items: center; gap: 16px;
+    background: color-mix(in oklch, var(--bg) 85%, transparent);
+    backdrop-filter: blur(10px); position: relative; z-index: 40;
+  }
+  .header h1 { font-size: 19px; font-weight: 700; letter-spacing: -0.015em; margin: 0; }
+  .header h1 small { display: block; font-size: 12px; font-weight: 500; color: var(--ink-3); letter-spacing: 0; }
+  .header-search { margin-left: 32px; flex: 1; max-width: 380px; position: relative; }
+  .header-search input {
+    width: 100%; padding: 9px 12px 9px 36px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; font-family: inherit; font-size: 13.5px; color: var(--ink);
+  }
+  .header-search input:focus { outline: none; border-color: var(--border-strong); background: var(--bg); }
+  .header-search-ico { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--ink-3); width: 16px; height: 16px; }
+  .header-search kbd {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    font-family: inherit; font-size: 11px; font-weight: 600; padding: 2px 6px;
+    border-radius: 4px; background: var(--surface-2); color: var(--ink-3); border: 1px solid var(--border);
+  }
+  .header-actions { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+  .icon-btn {
+    width: 36px; height: 36px; border-radius: 10px; color: var(--ink-2);
+    display: grid; place-items: center; position: relative;
+  }
+  .icon-btn:hover { background: var(--surface-2); color: var(--ink); }
+  .icon-btn .dot {
+    position: absolute; top: 9px; right: 9px; width: 8px; height: 8px;
+    border-radius: 50%; background: var(--accent); border: 2px solid var(--bg);
+  }
+  .btn-cta {
+    padding: 8px 14px; background: var(--ink); color: var(--bg);
+    border-radius: 10px; font-weight: 600; font-size: 13.5px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-cta:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .main { grid-area: main; overflow-y: auto; padding: 28px 32px 64px; }
+
+  /* ============ DASHBOARD CARDS ============ */
+  .grid { display: grid; gap: 16px; }
+  .grid-3 { grid-template-columns: 2fr 1fr 1fr; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .grid-bal { grid-template-columns: 1.4fr 1fr 1fr 1fr; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; }
+  .card-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .card-h h3 { margin: 0; font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+  .card-h-sub { font-size: 12px; color: var(--ink-3); }
+  .card-h-action { font-size: 13px; color: var(--accent); font-weight: 600; cursor: pointer; }
+
+  .balance-hero {
+    background: linear-gradient(135deg, oklch(0.17 0.025 240) 0%, oklch(0.22 0.04 240) 100%);
+    color: oklch(0.96 0.008 95); border-radius: var(--radius-lg); padding: 28px;
+    position: relative; overflow: hidden; border: none;
+  }
+  .balance-hero::after {
+    content: ""; position: absolute; top: -40px; right: -40px;
+    width: 220px; height: 220px; border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in oklch, var(--accent) 50%, transparent), transparent 70%);
+  }
+  .balance-hero .label {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em;
+    font-weight: 600; opacity: 0.75; display: flex; align-items: center; gap: 10px;
+  }
+  .balance-hero .label button { color: inherit; opacity: 0.85; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; }
+  .balance-hero .balance-val { font-size: 44px; font-weight: 700; letter-spacing: -0.025em; margin: 12px 0 4px; font-variant-numeric: tabular-nums; }
+  .balance-hero .balance-delta { color: oklch(0.85 0.16 155); font-weight: 600; font-size: 14px; }
+  .balance-hero .balance-row { display: flex; justify-content: space-between; align-items: end; margin-top: 20px; position: relative; }
+  .balance-hero .acc-chip {
+    padding: 5px 10px; background: oklch(0.3 0.03 240); border-radius: 100px;
+    font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .balance-hero .acc-chip .d { width: 7px; height: 7px; border-radius: 50%; }
+
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 22px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .stat-card .label { font-size: 12.5px; color: var(--ink-3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 8px; }
+  .stat-card .label .ico { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
+  .stat-card .label .ico.warn { background: var(--warn-soft); color: var(--warn); }
+  .stat-card .label .ico.danger { background: var(--danger-soft); color: var(--danger); }
+  .stat-card .label .ico.info { background: var(--info-soft); color: var(--info); }
+  .stat-card .val { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; margin-top: 4px; }
+  .stat-card .delta { font-size: 12.5px; font-weight: 600; }
+  .stat-card .delta.up { color: var(--accent); }
+  .stat-card .delta.down { color: var(--danger); }
+  .stat-card .delta.neutral { color: var(--ink-3); }
+
+  .chart-card { padding: 22px; }
+  .chart { height: 220px; position: relative; margin-top: 8px; }
+  .chart svg { width: 100%; height: 100%; overflow: visible; }
+  .chart-legend { display: flex; gap: 18px; margin-top: 16px; font-size: 13px; color: var(--ink-2); }
+  .chart-legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: middle; }
+
+  .tx-row { display: grid; grid-template-columns: 36px 1fr auto auto; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .tx-row:last-child { border-bottom: none; }
+  .tx-ico { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
+  .tx-ico.out { background: var(--danger-soft); color: var(--danger); }
+  .tx-ico.invest { background: var(--info-soft); color: var(--info); }
+  .tx-ico.debt { background: var(--warn-soft); color: var(--warn); }
+  .tx-title { font-weight: 600; font-size: 14px; }
+  .tx-sub { font-size: 12px; color: var(--ink-3); margin-top: 1px; }
+  .tx-cat { font-size: 12px; font-weight: 600; color: var(--ink-2); padding: 4px 9px; background: var(--surface-2); border-radius: 100px; border: 1px solid var(--border); }
+  .tx-amt { font-weight: 700; font-size: 14.5px; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .tx-amt.neg { color: var(--danger); }
+  .tx-amt.neutral { color: var(--ink); }
+
+  .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .quick-action {
+    padding: 16px 12px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; display: flex; flex-direction: column; align-items: center; gap: 10px;
+    font-weight: 600; font-size: 12.5px; color: var(--ink); text-align: center; transition: all 0.15s;
+  }
+  .quick-action:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: var(--shadow-md); }
+  .quick-action .qa-ico { width: 38px; height: 38px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; }
+
+  .goal-mini { padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .goal-mini:last-child { border-bottom: none; }
+  .goal-mini-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
+  .goal-mini-head .pct { color: var(--accent); font-weight: 700; font-size: 13px; }
+  .goal-mini-bar { height: 6px; background: var(--surface-2); border-radius: 100px; overflow: hidden; }
+  .goal-mini-fill { height: 100%; background: var(--accent); border-radius: 100px; }
+  .goal-mini-meta { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--ink-3); margin-top: 6px; }
+  .goal-mini-meta b { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+  .list-card { padding: 0; overflow: hidden; }
+  .list-card-head { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .filters { display: flex; gap: 6px; }
+  .filter-chip { padding: 6px 12px; border-radius: 100px; background: var(--surface-2); border: 1px solid var(--border); font-size: 12.5px; font-weight: 600; color: var(--ink-2); }
+  .filter-chip.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .table { display: flex; flex-direction: column; overflow-x: auto; }
+  .table-row { display: grid; grid-template-columns: 40px 2fr 1fr 1fr 1fr 90px; gap: 16px; align-items: center; padding: 14px 22px; border-bottom: 1px solid var(--border); font-size: 13.5px; min-width: 680px; }
+  .table-row.head { background: var(--surface-2); font-size: 11px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; padding: 12px 22px; }
+  .table-row:last-child { border-bottom: none; }
+  .table-row:hover:not(.head) { background: var(--surface-2); }
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 100px; font-size: 11.5px; font-weight: 600; background: var(--surface-2); border: 1px solid var(--border); color: var(--ink-2); }
+  .pill .d { width: 6px; height: 6px; border-radius: 50%; }
+
+  .inv-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; }
+  .inv-card-h { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+  .inv-card-h .ico { width: 40px; height: 40px; border-radius: 10px; background: var(--info-soft); color: var(--info); display: grid; place-items: center; }
+  .inv-card h4 { margin: 0; font-size: 15px; font-weight: 700; }
+  .inv-card .sub { color: var(--ink-3); font-size: 12px; margin-top: 2px; }
+  .inv-val { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .inv-delta { font-size: 13px; font-weight: 600; }
+  .inv-delta.up { color: var(--accent); }
+  .inv-delta.down { color: var(--danger); }
+
+  .goal-card-lg { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; position: relative; overflow: hidden; }
+  .goal-card-lg .deco { position: absolute; top: -30px; right: -30px; width: 110px; height: 110px; border-radius: 50%; background: var(--accent-soft); opacity: 0.7; }
+  .goal-card-lg .head { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; position: relative; }
+  .goal-card-lg .ico { width: 44px; height: 44px; border-radius: 12px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; flex-shrink: 0; }
+  .goal-card-lg h4 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
+  .goal-card-lg .deadline { font-size: 12.5px; color: var(--ink-3); }
+  .goal-card-lg .progress { height: 10px; background: var(--surface-2); border-radius: 100px; border: 1px solid var(--border); overflow: hidden; position: relative; margin: 12px 0 10px; }
+  .goal-card-lg .progress-fill { height: 100%; background: var(--accent); border-radius: 100px; }
+  .goal-card-lg .progress-meta { display: flex; justify-content: space-between; font-size: 13px; }
+  .goal-card-lg .progress-meta b { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .goal-card-lg .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border); }
+  .goal-card-lg .stat-mini .l { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); font-weight: 600; }
+  .goal-card-lg .stat-mini .v { font-size: 15px; font-weight: 700; margin-top: 2px; font-variant-numeric: tabular-nums; }
+
+  .donut-wrap { display: flex; align-items: center; gap: 24px; }
+  .donut { width: 180px; height: 180px; flex-shrink: 0; }
+  .donut-legend { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+  .donut-legend-item { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+  .donut-legend-item .d { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  .donut-legend-item .name { flex: 1; color: var(--ink-2); }
+  .donut-legend-item .val { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .donut-legend-item .pct { color: var(--ink-3); font-size: 12px; font-variant-numeric: tabular-nums; }
+
+  .login.loading .login-submit { opacity: 0.7; pointer-events: none; }
+  .fade-in { animation: fadeIn 0.4s ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ============ MODAL ============ */
+  .modal-overlay { position: fixed; inset: 0; background: oklch(0.17 0.025 240 / 0.55); backdrop-filter: blur(6px); display: grid; place-items: center; z-index: 100; padding: 24px; animation: overlayIn 0.18s ease both; }
+  @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+  .modal { background: var(--bg); border-radius: 24px; width: 100%; max-width: 520px; max-height: 92vh; overflow-y: auto; box-shadow: var(--shadow-lg); border: 1px solid var(--border); animation: modalIn 0.24s cubic-bezier(0.22, 1, 0.36, 1) both; position: relative; }
+  @keyframes modalIn { from { opacity: 0; transform: translateY(16px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  .modal-head { position: sticky; top: 0; background: var(--bg); z-index: 2; display: flex; align-items: center; gap: 14px; padding: 22px 24px 14px; border-bottom: 1px solid var(--border); }
+  .modal-ico { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); flex-shrink: 0; }
+  .modal-ico.out { background: var(--danger-soft); color: var(--danger); }
+  .modal-ico.invest { background: var(--info-soft); color: var(--info); }
+  .modal-title { font-size: 18px; font-weight: 700; letter-spacing: -0.015em; }
+  .modal-sub { font-size: 12.5px; color: var(--ink-3); margin-top: 2px; }
+  .modal-close { margin-left: auto; width: 36px; height: 36px; border-radius: 10px; color: var(--ink-2); display: grid; place-items: center; flex-shrink: 0; }
+  .modal-close:hover { background: var(--surface-2); color: var(--ink); }
+  .modal-body { padding: 22px 24px; display: flex; flex-direction: column; gap: 18px; }
+  .amount-input { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 22px; text-align: center; position: relative; }
+  .amount-input.accent { background: linear-gradient(135deg, color-mix(in oklch, var(--accent) 8%, var(--surface)) 0%, var(--surface) 100%); border-color: color-mix(in oklch, var(--accent) 25%, var(--border)); }
+  .amount-input.danger { background: linear-gradient(135deg, color-mix(in oklch, var(--danger) 8%, var(--surface)) 0%, var(--surface) 100%); border-color: color-mix(in oklch, var(--danger) 25%, var(--border)); }
+  .amount-input.info { background: linear-gradient(135deg, color-mix(in oklch, var(--info) 8%, var(--surface)) 0%, var(--surface) 100%); border-color: color-mix(in oklch, var(--info) 25%, var(--border)); }
+  .amount-input .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: var(--ink-3); margin-bottom: 8px; }
+  .amount-input .val { font-size: 44px; font-weight: 700; letter-spacing: -0.025em; color: var(--accent); font-variant-numeric: tabular-nums; line-height: 1; display: inline-flex; align-items: baseline; gap: 6px; }
+  .amount-input.out .val { color: var(--danger); }
+  .amount-input.info .val { color: var(--info); }
+  .amount-input .val small { font-size: 22px; opacity: 0.7; font-weight: 600; }
+  .amount-input .val-edit { background: transparent; border: none; color: inherit; font: inherit; text-align: center; width: 12ch; outline: none; }
+  .amount-input .val-edit::-webkit-outer-spin-button, .amount-input .val-edit::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .amount-input .helper { margin-top: 8px; font-size: 12px; color: var(--ink-3); }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .chip-select { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+  .chip-opt { padding: 7px 12px; border-radius: 100px; font-size: 13px; font-weight: 600; background: transparent; color: var(--ink-2); border: 1px solid transparent; display: inline-flex; align-items: center; gap: 6px; transition: all 0.12s; }
+  .chip-opt:hover { background: var(--surface-2); }
+  .chip-opt.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .chip-opt .d { width: 7px; height: 7px; border-radius: 50%; }
+  .pick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .pick-grid.three { grid-template-columns: repeat(3, 1fr); }
+  .pick-card { padding: 10px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 10px; color: var(--ink); transition: all 0.12s; text-align: left; }
+  .pick-card:hover { border-color: var(--border-strong); background: var(--surface-2); }
+  .pick-card.active { border-color: var(--ink); background: var(--ink); color: var(--bg); }
+  .pick-card.active .pick-card-ico { background: oklch(0.96 0.008 95 / 0.15); color: var(--bg); }
+  .pick-card-ico { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; flex-shrink: 0; background: var(--surface-2); color: var(--ink-2); }
+  .pick-card-ico.dot { background: transparent; }
+  .date-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .date-pill { padding: 8px 14px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); font-size: 13px; font-weight: 600; color: var(--ink-2); }
+  .date-pill:hover { background: var(--surface-2); }
+  .date-pill.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .field-input.textarea { min-height: 72px; resize: vertical; font-family: inherit; }
+  .modal-foot { position: sticky; bottom: 0; background: var(--bg); display: flex; gap: 10px; padding: 18px 24px; border-top: 1px solid var(--border); }
+  .btn-secondary { flex: 0 0 auto; padding: 12px 18px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border-strong); color: var(--ink); font-weight: 600; font-size: 14px; }
+  .btn-secondary:hover { background: var(--surface-2); }
+  .btn-submit { flex: 1; padding: 12px; border-radius: 12px; background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 14.5px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn-submit.dark { background: var(--ink); color: var(--bg); }
+  .btn-submit.danger { background: var(--danger); color: oklch(0.99 0.005 25); }
+  .btn-submit.info { background: var(--info); color: oklch(0.99 0.005 250); }
+  .btn-submit:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 12px 18px 12px 14px; border-radius: 100px; display: inline-flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; z-index: 200; box-shadow: var(--shadow-lg); animation: toastIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+  .toast .check { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; }
+
+  .add-menu { position: absolute; top: calc(100% + 8px); right: 0; background: var(--bg); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow-lg); padding: 6px; width: 240px; z-index: 30; display: flex; flex-direction: column; gap: 2px; animation: modalIn 0.18s ease both; }
+  .add-menu-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 9px; font-size: 13.5px; font-weight: 600; color: var(--ink); text-align: left; }
+  .add-menu-item:hover { background: var(--surface-2); }
+  .add-menu-item .ico { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); flex-shrink: 0; }
+  .add-menu-item .ico.out { background: var(--danger-soft); color: var(--danger); }
+  .add-menu-item .ico.invest { background: var(--info-soft); color: var(--info); }
+  .add-menu-item .sub { font-size: 11.5px; color: var(--ink-3); font-weight: 500; }
+  .add-menu-divider { height: 1px; background: var(--border); margin: 4px 6px; }
+
+  .empty { padding: 80px 24px; text-align: center; color: var(--ink-3); }
+  .empty .emo { width: 56px; height: 56px; border-radius: 16px; background: var(--surface-2); border: 1px solid var(--border); display: inline-grid; place-items: center; margin-bottom: 14px; color: var(--ink-3); }
+  .empty h3 { color: var(--ink); margin: 0 0 6px; font-size: 17px; }
+  .empty p { margin: 0 0 18px; font-size: 14px; max-width: 320px; margin-inline: auto; }
+
+  @media (max-width: 1180px) { .grid-bal { grid-template-columns: 1fr 1fr 1fr; } .grid-bal > .balance-hero { grid-column: 1 / -1; } }
+  @media (max-width: 1080px) { .grid-3 { grid-template-columns: 1fr 1fr; } .grid-3 > .card.chart-card { grid-column: 1 / -1 !important; } }
+  @media (max-width: 900px) { .login { grid-template-columns: 1fr; } .login-side { display: none; } .app { grid-template-columns: 64px 1fr; } .sidebar .side-label, .side-section, .side-profile .who { display: none; } .grid-3, .grid-bal, .grid-4 { grid-template-columns: 1fr 1fr; } .grid-bal > .balance-hero { grid-column: 1 / -1; } .grid-2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js" crossorigin></script>
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+const I = {
+  Home:    (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M4 11l8-7 8 7v9a1 1 0 01-1 1h-4v-6h-6v6H5a1 1 0 01-1-1v-9z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>),
+  Income:  (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M12 4v16m0 0l-6-6m6 6l6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>),
+  Expense: (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M12 20V4m0 0l-6 6m6-6l6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>),
+  Debt:    (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><rect x="3" y="6" width="18" height="13" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M3 10h18M7 15h3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>),
+  Invest:  (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M4 17l5-5 4 4 7-8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M15 8h5v5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>),
+  Goal:    (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8"/><circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.8"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/></svg>),
+  Report:  (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M4 20V8M10 20V4M16 20v-7M22 20H2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>),
+  Cog:     (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.8"/><path d="M19 12a7 7 0 00-.1-1.2l2-1.5-2-3.5-2.4.8a7 7 0 00-2-1.2L14 3h-4l-.5 2.4a7 7 0 00-2 1.2L5 5.8 3 9.3l2 1.5a7 7 0 000 2.4l-2 1.5 2 3.5 2.4-.8a7 7 0 002 1.2L10 21h4l.5-2.4a7 7 0 002-1.2l2.4.8 2-3.5-2-1.5c.07-.4.1-.8.1-1.2z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/></svg>),
+  Bell:    (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M6 9a6 6 0 0112 0c0 7 3 8 3 8H3s3-1 3-8zM10 21a2 2 0 004 0" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>),
+  Search:  (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8"/><path d="M21 21l-4.5-4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>),
+  Plus:    (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/></svg>),
+  Eye:     (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" stroke="currentColor" strokeWidth="1.8"/><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.8"/></svg>),
+  EyeOff:  (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M4 4l16 16M9.5 5.4A10 10 0 0112 5c6.5 0 10 7 10 7a16 16 0 01-3 4M6 6.5C3 8.4 2 12 2 12s3.5 7 10 7a10 10 0 005-1.3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>),
+  Arrow:   (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M5 12h14m0 0l-6-6m6 6l-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>),
+  Dots:    (p) => (<svg viewBox="0 0 24 24" fill="currentColor" {...p}><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg>),
+  Plane:   (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M21 12L3 19l4-7-4-7 18 7z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>),
+  House:   (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M4 11l8-7 8 7v9a1 1 0 01-1 1h-4v-6h-6v6H5a1 1 0 01-1-1v-9z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>),
+  Bag:     (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M5 8h14l-1 12H6L5 8z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M9 8V6a3 3 0 016 0v2" stroke="currentColor" strokeWidth="1.8"/></svg>),
+  Car:     (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M5 17h14l-2-7H7l-2 7zM5 17v3M19 17v3M8 13h8" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>),
+  Food:    (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M4 7c0-1 1-2 2-2s2 1 2 2v6M6 13v8M14 13v8M18 8v13M16 4l4 4-2 2-4-4 2-2z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>),
+  Card:    (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><rect x="3" y="6" width="18" height="13" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M3 10h18M7 15h3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>),
+  Pix:     (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M6 12l6-6 6 6-6 6-6-6zM2 12l4-4M22 12l-4-4M2 12l4 4M22 12l-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/></svg>),
+  Chart:   (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M3 12l4-4 4 6 4-3 6 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>),
+  Coins:   (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><ellipse cx="9" cy="7" rx="6" ry="3" stroke="currentColor" strokeWidth="1.6"/><path d="M3 7v5c0 1.7 2.7 3 6 3s6-1.3 6-3V7" stroke="currentColor" strokeWidth="1.6"/><path d="M9 12c-3.3 0-6 1.3-6 3v2c0 1.7 2.7 3 6 3M21 9v8c0 1.7-2.7 3-6 3-1.5 0-2.9-.3-4-.7" stroke="currentColor" strokeWidth="1.6"/></svg>),
+  Logout:  (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M10 4H6a2 2 0 00-2 2v12a2 2 0 002 2h4M15 17l5-5-5-5M20 12H8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>),
+  Heart:   (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M12 20s-7-4.5-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.5-7 10-7 10z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>),
+  Wallet:  (p) => (<svg viewBox="0 0 24 24" fill="none" {...p}><path d="M3 7h16a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7zM3 7v-.5A2.5 2.5 0 015.5 4H17" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><circle cx="17" cy="13" r="1.5" fill="currentColor"/></svg>),
+};
+
+const brl = (n) => 'R$ ' + Math.abs(n).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const k = (n) => n.toLocaleString('pt-BR');
+
+function Login({ onSubmit }) {
+  const [tab, setTab] = useState('entrar');
+  const [pw, setPw] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const submit = (e) => { e.preventDefault(); setLoading(true); setTimeout(() => onSubmit(), 700); };
+  return (
+    <div className={`login ${loading ? 'loading' : ''}`}>
+      <aside className="login-side">
+        <a className="login-logo" href="index.html">
+          <span className="mark">H</span>
+          <span>HelpFy<span style={{ color: 'var(--accent)' }}>.</span></span>
+        </a>
+        <div className="login-quote">
+          <div className="login-eyebrow">Help Financially</div>
+          <h1>Seu dinheiro,<br/><em>sob controle</em>.<br/>Sem esforço.</h1>
+          <p>Acesse sua conta e continue de onde parou. Receitas, gastos, dívidas, investimentos e objetivos — tudo em um lugar.</p>
+          <div className="login-feats">
+            <div className="login-feat"><span className="check"><I.Heart style={{width:14,height:14}}/></span><span>Dados criptografados ponta-a-ponta</span></div>
+            <div className="login-feat"><span className="check"><I.Pix style={{width:14,height:14}}/></span><span>Integração com Pix e principais bancos</span></div>
+            <div className="login-feat"><span className="check"><I.Chart style={{width:14,height:14}}/></span><span>Relatórios em tempo real, sem planilha</span></div>
+          </div>
+        </div>
+        <div className="login-foot"><span>© 2026 HelpFy</span><span>Help Financially</span></div>
+      </aside>
+      <section className="login-form">
+        <div className="login-form-inner fade-in">
+          <h2>{tab === 'entrar' ? 'Bem-vindo de volta' : 'Crie sua conta'}</h2>
+          <p className="sub">{tab === 'entrar' ? 'Entre para gerenciar sua vida financeira.' : 'Comece grátis, sem cartão de crédito.'}</p>
+          <div className="login-tabs" role="tablist">
+            <button className={`login-tab ${tab==='entrar'?'active':''}`} onClick={() => setTab('entrar')}>Entrar</button>
+            <button className={`login-tab ${tab==='criar'?'active':''}`} onClick={() => setTab('criar')}>Criar conta</button>
+          </div>
+          <form onSubmit={submit}>
+            {tab === 'criar' && (
+              <div className="field"><label className="field-label">Nome completo</label><div className="field-input-wrap"><input className="field-input" type="text" defaultValue="Lucca Modena" placeholder="Como devemos te chamar"/></div></div>
+            )}
+            <div className="field"><label className="field-label">E-mail</label><div className="field-input-wrap"><input className="field-input" type="email" defaultValue="lucca@helpfy.com.br" placeholder="voce@email.com"/></div></div>
+            <div className="field"><label className="field-label">Senha</label><div className="field-input-wrap"><input className="field-input" type={pw?'password':'text'} defaultValue="••••••••••"/><button type="button" className="field-eye" onClick={() => setPw(!pw)}>{pw?<I.Eye style={{width:16,height:16}}/>:<I.EyeOff style={{width:16,height:16}}/>}</button></div></div>
+            {tab === 'entrar' && (
+              <div className="login-options">
+                <label className="checkbox"><input type="checkbox" defaultChecked/><span>Continuar conectado</span></label>
+                <a className="login-forgot" href="#">Esqueci a senha</a>
+              </div>
+            )}
+            <button type="submit" className="login-submit" disabled={loading}>
+              {loading ? <span>Carregando…</span> : <>{tab==='entrar'?'Acessar conta':'Criar conta grátis'}<I.Arrow style={{width:16,height:16}}/></>}
+            </button>
+          </form>
+          <div className="login-divider">ou continue com</div>
+          <div className="oauth-row">
+            <button className="oauth"><svg viewBox="0 0 24 24" width="16" height="16"><path fill="#EA4335" d="M12 11v3.4h4.7c-.2 1.2-1.5 3.4-4.7 3.4-2.8 0-5.2-2.4-5.2-5.3S9.2 7.2 12 7.2c1.6 0 2.7.7 3.3 1.3l2.3-2.2C16.1 4.9 14.2 4 12 4 7.6 4 4 7.6 4 12s3.6 8 8 8c4.6 0 7.7-3.2 7.7-7.8 0-.5-.1-.9-.1-1.2H12z"/></svg>Google</button>
+            <button className="oauth"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.6 13.2c0-2.3 1.9-3.4 2-3.4-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.9-3.5.9-.7 0-1.9-.8-3.1-.8-1.6 0-3.1.9-3.9 2.4-1.7 2.9-.4 7.1 1.2 9.4.8 1.1 1.8 2.4 3 2.3 1.2-.1 1.7-.8 3.1-.8s1.8.8 3.1.8c1.3 0 2.1-1.1 2.9-2.3.9-1.3 1.3-2.6 1.3-2.7-.1-.1-2.7-1-2.7-4zM15.3 6.4c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.5 2.7-1.3z"/></svg>Apple</button>
+          </div>
+          <div className="login-cta-foot">{tab==='entrar'?<>Novo por aqui? <a onClick={() => setTab('criar')}>Crie uma conta grátis</a></>:<>Já tem conta? <a onClick={() => setTab('entrar')}>Entrar</a></>}</div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+const ACCOUNTS = [
+  { name: 'Nubank',   color: 'oklch(0.55 0.2 305)',   balance: 4280.42 },
+  { name: 'Itaú',    color: 'oklch(0.7 0.18 50)',     balance: 3120.50 },
+  { name: 'Inter',   color: 'oklch(0.65 0.2 30)',     balance: 2150.00 },
+  { name: 'Carteira',color: 'oklch(0.55 0.02 240)',   balance: 987.00  },
+];
+const TOTAL = ACCOUNTS.reduce((s, a) => s + a.balance, 0);
+
+const ALL_TX = [
+  { date:'13/10/2025', title:'Venda de roupas',     cat:'Vendas',     acc:'Nubank',   value:250,    type:'in' },
+  { date:'13/10/2025', title:'Compra de produtos',  cat:'Mercado',    acc:'Nubank',   value:-46,    type:'out' },
+  { date:'12/10/2025', title:'Hora extra',          cat:'Salário',    acc:'Itaú',     value:450,    type:'in' },
+  { date:'12/10/2025', title:'Almoço churrascaria', cat:'Alimentação',acc:'Nubank',   value:-37.50, type:'out' },
+  { date:'10/10/2025', title:'Locomoção UBER',      cat:'Transporte', acc:'Nubank',   value:-25.90, type:'out' },
+  { date:'10/10/2025', title:'Pix recebido',        cat:'Outros',     acc:'Inter',    value:87.50,  type:'in' },
+  { date:'08/10/2025', title:'Salário mensal',      cat:'Salário',    acc:'Itaú',     value:6000,   type:'in' },
+  { date:'05/10/2025', title:'Venda de bolo',       cat:'Vendas',     acc:'Carteira', value:35.50,  type:'in' },
+  { date:'03/10/2025', title:'Aporte Tesouro IPCA', cat:'Investim.',  acc:'Inter',    value:-800,   type:'invest' },
+  { date:'02/10/2025', title:'Fatura cartão',       cat:'Dívida',     acc:'Nubank',   value:-1240,  type:'debt' },
+];
+
+
+const INVESTMENTS = [
+  { name:'Tesouro IPCA+ 2029', type:'Renda fixa', value:4280.10, rendDelta:5.2,   total:280.10  },
+  { name:'CDB Banco Inter',     type:'Renda fixa', value:3450.00, rendDelta:4.1,   total:150.00  },
+  { name:'ITSA4',               type:'Ações',      value:2150.50, rendDelta:8.7,   total:178.50  },
+  { name:'BOVA11',              type:'ETF',        value:1620.00, rendDelta:-2.3,  total:-38.00  },
+  { name:'Bitcoin',             type:'Cripto',     value:980.20,  rendDelta:12.4,  total:108.20  },
+];
+
+const DEBTS = [
+  { name:'Cartão Nubank',      total:3450, paid:2210, monthly:410, parcelas:'4 de 12' },
+  { name:'Financiamento moto', total:8800, paid:4400, monthly:550, parcelas:'8 de 16' },
+  { name:'Empréstimo amigo',   total:1500, paid:500,  monthly:250, parcelas:'2 de 6'  },
+];
+
+const CAT_COLORS = {
+  'Mercado':'oklch(0.62 0.15 155)','Alimentação':'oklch(0.7 0.16 60)',
+  'Transporte':'oklch(0.6 0.18 250)','Dívida':'oklch(0.62 0.18 25)',
+  'Investim.':'oklch(0.6 0.2 295)','Outros':'oklch(0.55 0.02 240)',
+};
+const ACC_COLORS = { Nubank:'oklch(0.55 0.2 305)', 'Itaú':'oklch(0.7 0.18 50)', Inter:'oklch(0.65 0.2 30)', Carteira:'oklch(0.55 0.02 240)' };
+
+const NAV = [
+  { id:'dashboard',    label:'Dashboard',     ico:<I.Home/>   },
+  { id:'receitas',     label:'Receitas',      ico:<I.Income/> },
+  { id:'gastos',       label:'Gastos',        ico:<I.Expense/>},
+  { id:'dividas',      label:'Dívidas',       ico:<I.Debt/>,   badge:3 },
+  { id:'investimentos',label:'Investimentos', ico:<I.Invest/> },
+];
+
+function Sidebar({ active, setActive, onLogout }) {
+  return (
+    <aside className="sidebar">
+      <a className="side-logo" href="index.html">
+        <span className="mark">H</span>
+        <span>HelpFy<span style={{color:'var(--accent)'}}>.</span></span>
+      </a>
+      <div className="side-section">Principal</div>
+      {NAV.slice(0,6).map(n => (
+        <button key={n.id} className={`side-item ${active===n.id?'active':''}`} onClick={() => setActive(n.id)}>
+          <span className="side-ico">{n.ico}</span>
+          <span className="side-label">{n.label}</span>
+          {n.badge && <span className="badge">{n.badge}</span>}
+        </button>
+      ))}
+      <button className={`side-item ${active==='config'?'active':''}`} onClick={() => setActive('config')}>
+        <span className="side-ico"><I.Cog/></span>
+        <span className="side-label">Configurações</span>
+      </button>
+      <div className="side-bottom">
+        <div className="side-profile">
+          <span className="avatar">L</span>
+          <div className="who"><div className="name">Lucca Modena</div><div className="plan">Plano gratuito</div></div>
+          <button onClick={onLogout} title="Sair"><I.Logout style={{width:18,height:18}}/></button>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+const PAGE_TITLES = {
+  dashboard:    { t:'Visão geral',    s:'Segunda-feira, 13 de outubro de 2025' },
+  receitas:     { t:'Receitas',       s:'Tudo que entrou no seu mês' },
+  gastos:       { t:'Gastos',         s:'Para onde seu dinheiro foi' },
+  dividas:      { t:'Dívidas',        s:'3 contratos ativos · liberdade em 14 meses' },
+  investimentos:{ t:'Investimentos',  s:'Sua carteira atualizada agora' },
+  config:       { t:'Configurações',  s:'Conta, segurança, preferências' },
+};
+
+function Header({ active, onAdd }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const p = PAGE_TITLES[active] || PAGE_TITLES.dashboard;
+  useEffect(() => {
+    if (!menuOpen) return;
+    const close = () => setMenuOpen(false);
+    setTimeout(() => window.addEventListener('click', close, { once:true }), 0);
+    return () => window.removeEventListener('click', close);
+  }, [menuOpen]);
+  return (
+    <header className="header">
+      <h1>{p.t}<small>{p.s}</small></h1>
+      <div className="header-search">
+        <I.Search className="header-search-ico"/>
+        <input placeholder="Buscar transações, contas, metas…"/>
+        <kbd>⌘K</kbd>
+      </div>
+      <div className="header-actions">
+        <button className="icon-btn" title="Notificações"><I.Bell style={{width:18,height:18}}/><span className="dot"></span></button>
+        <button className="icon-btn" title="Configurações"><I.Cog style={{width:18,height:18}}/></button>
+        <div style={{position:'relative'}}>
+          <button className="btn-cta" onClick={(e) => { e.stopPropagation(); setMenuOpen(!menuOpen); }}>
+            <I.Plus style={{width:14,height:14}}/> Adicionar
+          </button>
+          {menuOpen && (
+            <div className="add-menu" onClick={(e) => e.stopPropagation()}>
+              <button className="add-menu-item" onClick={() => { onAdd('receita'); setMenuOpen(false); }}>
+                <span className="ico"><I.Income style={{width:16,height:16}}/></span>
+                <span><div>Nova receita</div><div className="sub">Entrada de dinheiro</div></span>
+              </button>
+              <button className="add-menu-item" onClick={() => { onAdd('gasto'); setMenuOpen(false); }}>
+                <span className="ico out"><I.Expense style={{width:16,height:16}}/></span>
+                <span><div>Novo gasto</div><div className="sub">Saída de despesa</div></span>
+              </button>
+              <div className="add-menu-divider"></div>
+              <button className="add-menu-item" onClick={() => { onAdd('aporte'); setMenuOpen(false); }}>
+                <span className="ico invest"><I.Invest style={{width:16,height:16}}/></span>
+                <span><div>Novo aporte</div><div className="sub">Investir em ativo</div></span>
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </header>
+  );
+}
+
+
+function Dashboard({ goTo, onAdd }) {
+  return (
+    <div className="grid" style={{gap:20}}>
+      <div className="grid grid-bal">
+        <div className="balance-hero">
+          <div className="label">Saldo consolidado<button title="Ocultar"><I.Eye style={{width:14,height:14}}/></button></div>
+          <div className="balance-val">{brl(TOTAL)}</div>
+          <div className="balance-delta">↑ +R$ 1.243,50 este mês</div>
+          <div className="balance-row">
+            <div style={{display:'flex',flexWrap:'wrap',gap:6}}>
+              {ACCOUNTS.map(a=><span key={a.name} className="acc-chip"><span className="d" style={{background:a.color}}></span>{a.name}</span>)}
+            </div>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="label"><span className="ico"><I.Income style={{width:14,height:14}}/></span>Receitas<small style={{marginLeft:'auto',textTransform:'none',letterSpacing:0,fontWeight:500,color:'var(--ink-3)'}}>· Out</small></div>
+          <div className="val">{brl(8950)}</div>
+          <div className="delta up">↑ 6,5% vs mês anterior</div>
+        </div>
+        <div className="stat-card">
+          <div className="label"><span className="ico danger"><I.Expense style={{width:14,height:14}}/></span>Gastos</div>
+          <div className="val">{brl(5640)}</div>
+          <div className="delta down">↑ 4,4% vs mês anterior</div>
+        </div>
+        <div className="stat-card">
+          <div className="label"><span className="ico info"><I.Invest style={{width:14,height:14}}/></span>Investido</div>
+          <div className="val">{brl(12480)}</div>
+          <div className="delta up">↑ R$ 678 este mês</div>
+        </div>
+      </div>
+
+      <div className="card">
+        <div className="card-h"><h3>Ações rápidas</h3><span className="card-h-sub">Adicione em 1 toque</span></div>
+        <div className="quick-actions">
+          {[{ico:<I.Income/>,label:'Adicionar receita',kind:'receita'},{ico:<I.Expense/>,label:'Adicionar gasto',kind:'gasto'},{ico:<I.Invest/>,label:'Novo aporte',kind:'aporte'}].map(a=>(
+            <button key={a.label} className="quick-action" onClick={() => onAdd(a.kind)}>
+              <span className="qa-ico">{a.ico}</span><span>{a.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="card">
+        <div className="card-h"><h3>Atividade recente</h3><a className="card-h-action" onClick={() => goTo('receitas')}>Ver tudo →</a></div>
+        {ALL_TX.slice(0,6).map((t,i)=>(
+          <div className="tx-row" key={i}>
+            <div className={`tx-ico ${t.type==='out'?'out':t.type==='invest'?'invest':t.type==='debt'?'debt':''}`}>
+              {t.type==='in'?<I.Income style={{width:16,height:16}}/>:t.type==='invest'?<I.Invest style={{width:16,height:16}}/>:t.type==='debt'?<I.Card style={{width:16,height:16}}/>:<I.Expense style={{width:16,height:16}}/>}
+            </div>
+            <div><div className="tx-title">{t.title}</div><div className="tx-sub">{t.date} · {t.acc}</div></div>
+            <span className="tx-cat">{t.cat}</span>
+            <span className={`tx-amt ${t.value<0?'neg':''}`}>{t.value>0?'+':'−'} {brl(t.value)}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TxList({ filterType, title, onAdd }) {
+  const items = ALL_TX.filter(t => filterType==='in'?t.type==='in':filterType==='out'?t.type==='out':true);
+  const total = items.reduce((s,t)=>s+Math.abs(t.value),0);
+  const [active, setActive] = useState('Todas');
+  const cats = ['Todas',...new Set(items.map(t=>t.cat))];
+  return (
+    <div className="grid" style={{gap:20}}>
+      <div className="grid grid-4">
+        <div className="stat-card"><div className="label">{title} no mês</div><div className="val">{brl(total)}</div><div className="delta up">↑ vs mês anterior</div></div>
+        <div className="stat-card"><div className="label">Maior {title==='Recebido'?'entrada':'saída'}</div><div className="val">{brl(items.reduce((a,b)=>Math.abs(b.value)>Math.abs(a.value)?b:a,{value:0}).value)}</div><div className="delta neutral">{items.reduce((a,b)=>Math.abs(b.value)>Math.abs(a.value)?b:a,{value:0,title:''}).title}</div></div>
+        <div className="stat-card"><div className="label">Lançamentos</div><div className="val">{items.length}</div><div className="delta neutral">no período</div></div>
+        <div className="stat-card"><div className="label">Média por lançamento</div><div className="val">{brl(total/Math.max(items.length,1))}</div><div className="delta neutral">automático</div></div>
+      </div>
+      <div className="card list-card">
+        <div className="list-card-head">
+          <div className="filters">{cats.map(c=><button key={c} className={`filter-chip ${active===c?'active':''}`} onClick={()=>setActive(c)}>{c}</button>)}</div>
+          <button className="btn-cta" onClick={onAdd}><I.Plus style={{width:14,height:14}}/> Novo {filterType==='in'?'lançamento':'gasto'}</button>
+        </div>
+        <div className="table">
+          <div className="table-row head"><span></span><span>Descrição</span><span>Categoria</span><span>Conta</span><span>Data</span><span style={{textAlign:'right'}}>Valor</span></div>
+          {items.filter(t=>active==='Todas'||t.cat===active).map((t,i)=>(
+            <div className="table-row" key={i}>
+              <div className={`tx-ico ${filterType==='out'||t.type==='out'?'out':''}`} style={{width:32,height:32}}>{filterType==='in'||t.type==='in'?<I.Income style={{width:14,height:14}}/>:<I.Expense style={{width:14,height:14}}/>}</div>
+              <div><div style={{fontWeight:600}}>{t.title}</div></div>
+              <span><span className="pill"><span className="d" style={{background:CAT_COLORS[t.cat]||'var(--ink-3)'}}/> {t.cat}</span></span>
+              <span><span className="pill"><span className="d" style={{background:ACC_COLORS[t.acc]}}/> {t.acc}</span></span>
+              <span style={{color:'var(--ink-3)'}}>{t.date}</span>
+              <span className={`tx-amt ${t.value<0?'neg':''}`} style={{textAlign:'right'}}>{t.value>0?'+ ':'− '}{brl(t.value)}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+function Dividas() {
+  const totalDebt = DEBTS.reduce((s,d)=>s+(d.total-d.paid),0);
+  const totalMonthly = DEBTS.reduce((s,d)=>s+d.monthly,0);
+  return (
+    <div className="grid" style={{gap:20}}>
+      <div className="grid grid-3">
+        <div className="balance-hero" style={{background:'linear-gradient(135deg, oklch(0.62 0.18 25) 0%, oklch(0.45 0.18 25) 100%)'}}>
+          <div className="label">Total devedor</div>
+          <div className="balance-val">{brl(totalDebt)}</div>
+          <div className="balance-delta" style={{color:'oklch(0.95 0.04 25)'}}>3 contratos ativos</div>
+        </div>
+        <div className="stat-card">
+          <div className="label"><span className="ico warn"><I.Card style={{width:14,height:14}}/></span>Parcela mensal</div>
+          <div className="val">{brl(totalMonthly)}</div>
+          <div className="delta neutral">próximo vencimento dia 25</div>
+        </div>
+        <div className="stat-card">
+          <div className="label"><span className="ico"><I.Goal style={{width:14,height:14}}/></span>Liberdade em</div>
+          <div className="val">14 meses</div>
+          <div className="delta up">+ 2 meses mais rápido com aporte extra</div>
+        </div>
+      </div>
+      <div className="grid grid-2">
+        {DEBTS.map(d=>{
+          const pct=Math.round((d.paid/d.total)*100);
+          return (
+            <div className="goal-card-lg" key={d.name}>
+              <div className="head">
+                <div className="ico" style={{background:'var(--warn-soft)',color:'var(--warn)'}}><I.Card/></div>
+                <div style={{flex:1}}><h4>{d.name}</h4><div className="deadline">{d.parcelas} parcelas pagas</div></div>
+                <button className="icon-btn"><I.Dots style={{width:18,height:18}}/></button>
+              </div>
+              <div className="progress"><div className="progress-fill" style={{width:pct+'%',background:'var(--warn)'}}/></div>
+              <div className="progress-meta"><span><b>{brl(d.paid)}</b> pagos</span><span>de {brl(d.total)}</span></div>
+              <div className="stats-row">
+                <div className="stat-mini"><div className="l">Restante</div><div className="v">{brl(d.total-d.paid)}</div></div>
+                <div className="stat-mini"><div className="l">Parcela</div><div className="v">{brl(d.monthly)}</div></div>
+                <div className="stat-mini"><div className="l">Progresso</div><div className="v" style={{color:'var(--warn)'}}>{pct}%</div></div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function Investimentos({ onAdd }) {
+  const total = INVESTMENTS.reduce((s,x)=>s+x.value,0);
+  const totalGain = INVESTMENTS.reduce((s,x)=>s+x.total,0);
+  return (
+    <div className="grid" style={{gap:20}}>
+      <div className="grid grid-3">
+        <div className="balance-hero" style={{background:'linear-gradient(135deg, oklch(0.58 0.16 250) 0%, oklch(0.4 0.16 250) 100%)'}}>
+          <div className="label">Patrimônio investido</div>
+          <div className="balance-val">{brl(total)}</div>
+          <div className="balance-delta" style={{color:'oklch(0.85 0.16 155)'}}>↑ +{brl(totalGain)} (lucro)</div>
+        </div>
+        <div className="stat-card">
+          <div className="label"><span className="ico info"><I.Chart style={{width:14,height:14}}/></span>Rentabilidade mês</div>
+          <div className="val">+5,2%</div>
+          <div className="delta up">acima do CDI (&gt;+3,8%)</div>
+        </div>
+        <div className="stat-card">
+          <div className="label"><span className="ico"><I.Coins style={{width:14,height:14}}/></span>Aporte do mês</div>
+          <div className="val">{brl(800)}</div>
+          <div className="delta neutral">Tesouro IPCA · 03/10</div>
+        </div>
+      </div>
+      <div className="grid grid-3">
+        {INVESTMENTS.map(inv=>(
+          <div className="inv-card" key={inv.name}>
+            <div className="inv-card-h"><div className="ico"><I.Invest style={{width:18,height:18}}/></div><button className="icon-btn"><I.Dots style={{width:18,height:18}}/></button></div>
+            <div><h4>{inv.name}</h4><div className="sub">{inv.type}</div></div>
+            <div style={{marginTop:14}}>
+              <div className="inv-val">{brl(inv.value)}</div>
+              <div className={`inv-delta ${inv.rendDelta>=0?'up':'down'}`}>{inv.rendDelta>=0?'↑':'↓'} {inv.rendDelta}% · {inv.total>=0?'+':'−'}{brl(inv.total)} lucro</div>
+            </div>
+            <div style={{marginTop:14,paddingTop:14,borderTop:'1px solid var(--border)',fontSize:12,color:'var(--ink-3)',display:'flex',justifyContent:'space-between'}}>
+              <span>Última atualização</span><b style={{color:'var(--ink-2)'}}>agora há pouco</b>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+
+function Config() {
+  return (
+    <div className="grid" style={{gap:20}}>
+      <div className="grid grid-2">
+        <div className="card">
+          <div className="card-h"><h3>Perfil</h3></div>
+          <div style={{display:'flex',gap:16,alignItems:'center',marginBottom:18}}>
+            <div style={{width:56,height:56,borderRadius:16,background:'var(--accent)',color:'var(--accent-ink)',display:'grid',placeItems:'center',fontWeight:700,fontSize:22}}>L</div>
+            <div><div style={{fontWeight:700,fontSize:16}}>Lucca Modena</div><div style={{color:'var(--ink-3)',fontSize:13}}>lucca@helpfy.com.br</div></div>
+            <button className="btn-cta" style={{marginLeft:'auto'}}>Editar</button>
+          </div>
+          <div className="field" style={{marginBottom:12}}><label className="field-label">Nome</label><input className="field-input" defaultValue="Lucca de Oliveira Modena"/></div>
+          <div className="field" style={{marginBottom:12}}><label className="field-label">E-mail</label><input className="field-input" defaultValue="lucca@helpfy.com.br"/></div>
+          <div className="field"><label className="field-label">Telefone</label><input className="field-input" defaultValue="+55 11 99999-0000"/></div>
+        </div>
+        <div className="card">
+          <div className="card-h"><h3>Plano &amp; Segurança</h3></div>
+          <div className="goal-card-lg" style={{padding:18,marginBottom:14}}>
+            <div className="head">
+              <div className="ico"><I.Heart style={{width:18,height:18}}/></div>
+              <div style={{flex:1}}><h4>Plano gratuito</h4><div className="deadline">3 objetivos · contas ilimitadas</div></div>
+              <button className="btn-cta">Upgrade</button>
+            </div>
+          </div>
+          <div className="goal-mini"><div className="goal-mini-head"><span>Autenticação 2FA</span><span style={{color:'var(--accent)',fontWeight:600,fontSize:12}}>Ativa</span></div></div>
+          <div className="goal-mini"><div className="goal-mini-head"><span>Última troca de senha</span><span style={{color:'var(--ink-3)',fontSize:12}}>12 dias atrás</span></div></div>
+          <div className="goal-mini"><div className="goal-mini-head"><span>Sessões ativas</span><span style={{color:'var(--ink-3)',fontSize:12}}>2 dispositivos</span></div></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============ MODAIS ============
+const CATS_IN  = ['Salário','Vendas','Hora extra','Pix recebido','Investim.','Outros'];
+const CATS_OUT = ['Mercado','Alimentação','Transporte','Moradia','Lazer','Saúde','Educação','Outros'];
+const BANK_OPTS = [
+  {name:'Nubank',   color:'oklch(0.55 0.2 305)'},
+  {name:'Itaú',     color:'oklch(0.7 0.18 50)' },
+  {name:'Inter',    color:'oklch(0.65 0.2 30)'  },
+  {name:'Carteira', color:'oklch(0.55 0.02 240)'},
+];
+const today = () => { const d=new Date(); return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`; };
+const isoDate = () => new Date().toISOString().slice(0,10);
+
+function Modal({ ico, kind, title, sub, onClose, onSubmit, submitLabel, accent, children, canSubmit=true }) {
+  useEffect(() => {
+    const onKey=(e)=>{ if(e.key==='Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+  const accentClass={in:'',out:'out',invest:'invest',goal:''}[accent]||'';
+  const btnClass={in:'',out:'danger',invest:'info',goal:''}[accent]||'';
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" onClick={(e)=>e.stopPropagation()}>
+        <div className="modal-head">
+          <div className={`modal-ico ${accentClass}`}>{ico}</div>
+          <div><div className="modal-title">{title}</div><div className="modal-sub">{sub}</div></div>
+          <button className="modal-close" onClick={onClose} aria-label="Fechar">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M6 6l12 12M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+          </button>
+        </div>
+        <div className="modal-body">{children}</div>
+        <div className="modal-foot">
+          <button className="btn-secondary" onClick={onClose}>Cancelar</button>
+          <button className={`btn-submit ${btnClass}`} onClick={()=>canSubmit&&onSubmit?.()} disabled={!canSubmit}>
+            {submitLabel} <I.Arrow style={{width:14,height:14}}/>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AmountField({ value, onChange, color, helper }) {
+  return (
+    <div className={`amount-input ${color}`}>
+      <div className="lbl">Valor</div>
+      <div className="val">
+        <small>R$</small>
+        <input className="val-edit" type="number" inputMode="decimal" min="0" step="0.01" value={value} onChange={(e)=>onChange(e.target.value)}/>
+      </div>
+      {helper && <div className="helper">{helper}</div>}
+    </div>
+  );
+}
+
+function ReceitaModal({ onClose, onSubmit }) {
+  const [num,setNum]=useState(450);
+  const [date,setDate]=useState('hoje');
+  const [bank,setBank]=useState('Nubank');
+  const [cat,setCat]=useState('Vendas');
+  const [desc,setDesc]=useState('');
+  return (
+    <Modal ico={<I.Income/>} title="Nova receita" sub={`Entrada de dinheiro · ${today()}`} onClose={onClose} onSubmit={()=>onSubmit({num,date,bank,cat,desc})} submitLabel="Adicionar receita" accent="in" canSubmit={num>0}>
+      <AmountField value={num} onChange={(v)=>setNum(Number(v)||0)} color="accent" helper="Use ponto para os centavos · ex: 450.00"/>
+      <div className="field"><label className="field-label">Data da entrada</label>
+        <div className="date-row">
+          {[{k:'ontem',l:'Ontem'},{k:'hoje',l:'Hoje'},{k:'amanha',l:'Amanhã'}].map(d=><button key={d.k} className={`date-pill ${date===d.k?'active':''}`} onClick={()=>setDate(d.k)}>{d.l}</button>)}
+          <input className="date-pill" type="date" defaultValue={isoDate()} onChange={()=>setDate('custom')} style={{padding:'6px 10px'}}/>
+        </div>
+      </div>
+      <div className="field"><label className="field-label">Conta</label>
+        <div className="pick-grid">{BANK_OPTS.map(b=><button key={b.name} className={`pick-card ${bank===b.name?'active':''}`} onClick={()=>setBank(b.name)}><span className="pick-card-ico dot" style={{background:b.color}}></span><span>{b.name}</span></button>)}</div>
+      </div>
+      <div className="field"><label className="field-label">Categoria</label>
+        <div className="chip-select">{CATS_IN.map(c=><button key={c} className={`chip-opt ${cat===c?'active':''}`} onClick={()=>setCat(c)}>{c}</button>)}</div>
+      </div>
+      <div className="field"><label className="field-label">Descrição (opcional)</label>
+        <textarea className="field-input textarea" placeholder="Ex: Hora extra do projeto X" value={desc} onChange={(e)=>setDesc(e.target.value)}/>
+      </div>
+    </Modal>
+  );
+}
+
+function GastoModal({ onClose, onSubmit }) {
+  const [num,setNum]=useState(46);
+  const [date,setDate]=useState('hoje');
+  const [bank,setBank]=useState('Nubank');
+  const [cat,setCat]=useState('Mercado');
+  const [desc,setDesc]=useState('');
+  const [recurring,setRecurring]=useState(false);
+  return (
+    <Modal ico={<I.Expense/>} title="Novo gasto" sub={`Saída de despesa · ${today()}`} onClose={onClose} onSubmit={()=>onSubmit({num,date,bank,cat,desc,recurring})} submitLabel="Adicionar gasto" accent="out" canSubmit={num>0}>
+      <AmountField value={num} onChange={(v)=>setNum(Number(v)||0)} color="danger out" helper="O valor será subtraído do saldo da conta"/>
+      <div className="field"><label className="field-label">Data da saída</label>
+        <div className="date-row">
+          {[{k:'ontem',l:'Ontem'},{k:'hoje',l:'Hoje'},{k:'amanha',l:'Amanhã'}].map(d=><button key={d.k} className={`date-pill ${date===d.k?'active':''}`} onClick={()=>setDate(d.k)}>{d.l}</button>)}
+          <input className="date-pill" type="date" defaultValue={isoDate()} onChange={()=>setDate('custom')} style={{padding:'6px 10px'}}/>
+        </div>
+      </div>
+      <div className="field"><label className="field-label">Conta de origem</label>
+        <div className="pick-grid">{BANK_OPTS.map(b=><button key={b.name} className={`pick-card ${bank===b.name?'active':''}`} onClick={()=>setBank(b.name)}><span className="pick-card-ico dot" style={{background:b.color}}></span><span>{b.name}</span></button>)}</div>
+      </div>
+      <div className="field"><label className="field-label">Categoria</label>
+        <div className="chip-select">{CATS_OUT.map(c=><button key={c} className={`chip-opt ${cat===c?'active':''}`} onClick={()=>setCat(c)}>{c}</button>)}</div>
+      </div>
+      <div className="field"><label className="field-label">Descrição (opcional)</label>
+        <textarea className="field-input textarea" placeholder="Ex: Compra mensal mercado" value={desc} onChange={(e)=>setDesc(e.target.value)}/>
+      </div>
+      <label className="checkbox" style={{fontSize:13.5,fontWeight:500,color:'var(--ink-2)'}}>
+        <input type="checkbox" checked={recurring} onChange={(e)=>setRecurring(e.target.checked)}/><span>Repetir todo mês neste dia</span>
+      </label>
+    </Modal>
+  );
+}
+
+const INV_TYPES = [
+  {k:'tesouro',label:'Tesouro Direto',ico:<I.Coins/>,color:'oklch(0.62 0.15 155)'},
+  {k:'cdb',    label:'CDB / LCI',     ico:<I.Wallet/>,color:'oklch(0.58 0.16 250)'},
+  {k:'acoes',  label:'Ações / FII',   ico:<I.Chart/>, color:'oklch(0.7 0.16 60)'},
+  {k:'cripto', label:'Cripto',        ico:<I.Invest/>,color:'oklch(0.6 0.2 295)'},
+];
+
+function AporteModal({ onClose, onSubmit }) {
+  const [num,setNum]=useState(800);
+  const [type,setType]=useState('tesouro');
+  const [asset,setAsset]=useState('Tesouro IPCA+ 2029');
+  const [bank,setBank]=useState('Inter');
+  const [rate,setRate]=useState('IPCA + 6,2%');
+  const [date,setDate]=useState('hoje');
+  const suggestions={tesouro:['Tesouro IPCA+ 2029','Tesouro Selic 2027','Tesouro Prefixado 2028'],cdb:['CDB Banco Inter 110%','CDB Nubank 105%','LCI Itaú 95%'],acoes:['ITSA4','BBSE3','BOVA11','HGLG11'],cripto:['Bitcoin','Ethereum','Solana']};
+  return (
+    <Modal ico={<I.Invest/>} title="Novo aporte" sub={`Investimento · ${today()}`} onClose={onClose} onSubmit={()=>onSubmit({num,type,asset,bank,rate,date})} submitLabel="Registrar aporte" accent="invest" canSubmit={num>0&&asset.trim().length>0}>
+      <AmountField value={num} onChange={(v)=>setNum(Number(v)||0)} color="info" helper="Será debitado da conta escolhida"/>
+      <div className="field"><label className="field-label">Tipo de investimento</label>
+        <div className="pick-grid">{INV_TYPES.map(t=><button key={t.k} className={`pick-card ${type===t.k?'active':''}`} onClick={()=>{setType(t.k);setAsset(suggestions[t.k][0]);}}><span className="pick-card-ico" style={{background:type===t.k?'oklch(0.96 0.008 95 / 0.15)':'color-mix(in oklch, '+t.color+' 14%, var(--surface-2))',color:type===t.k?'var(--bg)':t.color}}>{t.ico}</span><span>{t.label}</span></button>)}</div>
+      </div>
+      <div className="field"><label className="field-label">Ativo</label>
+        <input className="field-input" value={asset} onChange={(e)=>setAsset(e.target.value)} placeholder="Ex: Tesouro IPCA+ 2029" list={`assets-${type}`}/>
+        <datalist id={`assets-${type}`}>{suggestions[type].map(s=><option key={s} value={s}/>)}</datalist>
+        <div className="date-row" style={{marginTop:6}}>{suggestions[type].slice(0,3).map(s=><button key={s} className={`date-pill ${asset===s?'active':''}`} onClick={()=>setAsset(s)}>{s}</button>)}</div>
+      </div>
+      <div className="field-grid">
+        <div className="field"><label className="field-label">Conta de origem</label>
+          <div className="chip-select">{BANK_OPTS.map(b=><button key={b.name} className={`chip-opt ${bank===b.name?'active':''}`} onClick={()=>setBank(b.name)}><span className="d" style={{background:b.color}}/> {b.name}</button>)}</div>
+        </div>
+        <div className="field"><label className="field-label">Rentabilidade esperada</label>
+          <input className="field-input" value={rate} onChange={(e)=>setRate(e.target.value)} placeholder="Ex: CDI · 12% a.a."/>
+        </div>
+      </div>
+      <div className="field"><label className="field-label">Data do aporte</label>
+        <div className="date-row">
+          {[{k:'ontem',l:'Ontem'},{k:'hoje',l:'Hoje'}].map(d=><button key={d.k} className={`date-pill ${date===d.k?'active':''}`} onClick={()=>setDate(d.k)}>{d.l}</button>)}
+          <input className="date-pill" type="date" defaultValue={isoDate()} onChange={()=>setDate('custom')} style={{padding:'6px 10px'}}/>
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
+
+function AppShell({ onLogout }) {
+  const [active,setActive]=useState('dashboard');
+  const [modal,setModal]=useState(null);
+  const [toast,setToast]=useState(null);
+
+  const handleSubmit=(kind)=>{
+    setModal(null);
+    const labels={receita:'Receita adicionada',gasto:'Gasto adicionado',aporte:'Aporte registrado'};
+    setToast(labels[kind]||'Salvo');
+    setTimeout(()=>setToast(null),2400);
+  };
+
+  const Page={
+    dashboard:<Dashboard goTo={setActive} onAdd={setModal}/>,
+    receitas:<TxList filterType="in" title="Recebido" onAdd={()=>setModal('receita')}/>,
+    gastos:<TxList filterType="out" title="Gasto" onAdd={()=>setModal('gasto')}/>,
+    dividas:<Dividas/>,
+    investimentos:<Investimentos onAdd={()=>setModal('aporte')}/>,
+    config:<Config/>,
+  }[active];
+
+  return (
+    <div className="app">
+      <Sidebar active={active} setActive={setActive} onLogout={onLogout}/>
+      <Header active={active} onAdd={setModal}/>
+      <main className="main" key={active}><div className="fade-in">{Page}</div></main>
+      {modal==='receita'  && <ReceitaModal  onClose={()=>setModal(null)} onSubmit={()=>handleSubmit('receita')}/>}
+      {modal==='gasto'    && <GastoModal    onClose={()=>setModal(null)} onSubmit={()=>handleSubmit('gasto')}/>}
+      {modal==='aporte'   && <AporteModal   onClose={()=>setModal(null)} onSubmit={()=>handleSubmit('aporte')}/>}
+      {toast && (
+        <div className="toast">
+          <span className="check"><svg viewBox="0 0 24 24" width="14" height="14" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+          {toast}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Root() {
+  const [logged,setLogged]=useState(false);
+  return logged
+    ? <AppShell onLogout={()=>setLogged(false)}/>
+    : <Login onSubmit={()=>setLogged(true)}/>;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<Root/>);
+</script>
+</body>
+</html>
+</script>
+</body>
+</html>
