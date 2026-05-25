@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -20,6 +21,7 @@ import java.time.Instant;
 public class Transactions {
     @Id
     @Column(name = "TRANSACTIONID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String transactionId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -44,7 +46,7 @@ public class Transactions {
     private BigDecimal amount;
 
     @Column(name = "DTTRANSACTION", nullable = false)
-    private Instant dtTransaction;
+    private LocalDateTime dtTransaction;
 
     @Column(name = "STATUS", nullable = false, length = 10)
     private String status;

@@ -4,11 +4,14 @@ import com.fiap.fintech.dto.UsersResponseDTO;
 import com.fiap.fintech.model.Users;
 import com.fiap.fintech.repository.UsersRepository;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class UsersService {
 
@@ -40,6 +43,8 @@ public class UsersService {
         return new UsersResponseDTO(
                 saved.getUserid()
 
-        );
+    public Boolean validateUserExist(String userId) {
+        return usersRepository.existsById(userId);
     }
+
 }

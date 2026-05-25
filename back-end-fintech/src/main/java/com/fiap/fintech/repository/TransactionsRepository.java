@@ -1,16 +1,14 @@
 package com.fiap.fintech.repository;
 
-import com.fiap.fintech.model.Accounts;
-
+import com.fiap.fintech.model.Transactions;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
+public interface TransactionsRepository extends JpaRepository<Transactions, String> {
 
-public interface AccountsRepository extends JpaRepository<Accounts, String> {
+    List<Transactions> findByUser_Userid(String userid);
 
-    List<Accounts> findByUser_Userid(String userid);
 }

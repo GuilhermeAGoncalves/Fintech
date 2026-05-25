@@ -5,20 +5,17 @@ import com.fiap.fintech.model.Users;
 import com.fiap.fintech.repository.AccountsRepository;
 import com.fiap.fintech.repository.UsersRepository;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Service
 public class AccountService {
 
     private final AccountsRepository accountsRepository;
     private final UsersRepository usersRepository;
-
-    public AccountService(AccountsRepository accountsRepository, UsersRepository usersRepository) {
-        this.accountsRepository = accountsRepository;
-        this.usersRepository = usersRepository;
-    }
 
     public List<Accounts> getAccountsByUser(String userid) {
         return accountsRepository.findByUser_Userid(userid);
