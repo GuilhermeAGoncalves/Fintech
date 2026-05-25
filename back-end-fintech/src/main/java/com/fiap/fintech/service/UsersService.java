@@ -1,6 +1,6 @@
 package com.fiap.fintech.service;
 
-
+import com.fiap.fintech.dto.UsersResponseDTO;
 import com.fiap.fintech.model.Users;
 import com.fiap.fintech.repository.UsersRepository;
 import jakarta.transaction.Transactional;
@@ -17,8 +17,17 @@ public class UsersService {
 
     private final UsersRepository usersRepository;
 
-    public List<Users> getAllUsers() {
-        return usersRepository.findAll();
+    public UsersService(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
+    }
+
+    public List<UsersResponseDTO> getAllUsers() {
+        return usersRepository.findAll()
+                .stream()
+                .map(user -> new UsersResponseDTO(
+                        user.getUserid()
+                ))
+                .toList();
     }
 
     public Optional<Users> getUserById(String userid) {
@@ -26,12 +35,13 @@ public class UsersService {
     }
 
     @Transactional
-    public Users saveUser(Users user) {
+    public UsersResponseDTO saveUser(Users user) {
         if (usersRepository.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
         }
-        return usersRepository.save(user);
-    }
+        Users saved = usersRepository.save(user);
+        return new UsersResponseDTO(
+                saved.getUserid()
 
     public Boolean validateUserExist(String userId) {
         return usersRepository.existsById(userId);
