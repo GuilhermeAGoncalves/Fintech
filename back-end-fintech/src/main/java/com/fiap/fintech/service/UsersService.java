@@ -1,10 +1,9 @@
 package com.fiap.fintech.service;
 
-
+import com.fiap.fintech.dto.UsersResponseDTO;
 import com.fiap.fintech.model.Users;
 import com.fiap.fintech.repository.UsersRepository;
 import jakarta.transaction.Transactional;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +18,15 @@ public class UsersService {
         this.usersRepository = usersRepository;
     }
 
-    public List<Users> getAllUsers() {
-        return usersRepository.findAll();
+    public List<UsersResponseDTO> getAllUsers() {
+        return usersRepository.findAll()
+                .stream()
+                .map(user -> new UsersResponseDTO(
+                        user.getUserid(),
+                        user.getName(),
+                        user.getEmail()
+                ))
+                .toList();
     }
 
     public Optional<Users> getUserById(String userid) {
@@ -28,11 +34,15 @@ public class UsersService {
     }
 
     @Transactional
-    public Users saveUser(Users user) {
+    public UsersResponseDTO saveUser(Users user) {
         if (usersRepository.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
         }
-        return usersRepository.save(user);
+        Users saved = usersRepository.save(user);
+        return new UsersResponseDTO(
+                saved.getUserid(),
+                saved.getName(),
+                saved.getEmail()
+        );
     }
-
 }
