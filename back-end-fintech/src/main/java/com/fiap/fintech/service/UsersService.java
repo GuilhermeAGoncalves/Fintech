@@ -22,9 +22,7 @@ public class UsersService {
         return usersRepository.findAll()
                 .stream()
                 .map(user -> new UsersResponseDTO(
-                        user.getUserid(),
-                        user.getName(),
-                        user.getEmail()
+                        user.getUserid()
                 ))
                 .toList();
     }
@@ -40,9 +38,8 @@ public class UsersService {
         }
         Users saved = usersRepository.save(user);
         return new UsersResponseDTO(
-                saved.getUserid(),
-                saved.getName(),
-                saved.getEmail()
+                saved.getUserid()
+
         );
     }
 }
