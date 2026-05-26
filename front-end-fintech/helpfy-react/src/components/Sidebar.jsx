@@ -3,13 +3,7 @@ import { useAuth } from '../context/AuthContext'
 import * as I from './Icons'
 
 const NAV = [
-  { to: '/',             label: 'Dashboard',     Icon: I.Home    },
-  { to: '/receitas',     label: 'Receitas',      Icon: I.Income  },
-  { to: '/gastos',       label: 'Gastos',        Icon: I.Expense },
-  { to: '/dividas',      label: 'Dívidas',       Icon: I.Debt    },
-  { to: '/investimentos',label: 'Investimentos', Icon: I.Invest  },
-  { to: '/objetivos',    label: 'Objetivos',     Icon: I.Goal    },
-  { to: '/relatorios',   label: 'Relatórios',    Icon: I.Report  },
+  { to: '/', label: 'Dashboard', Icon: I.Home },
 ]
 
 export default function Sidebar() {
