@@ -188,8 +188,8 @@
   .app {
     display: grid;
     grid-template-columns: var(--sidebar-w) 1fr;
-    grid-template-rows: var(--header-h) 1fr;
-    grid-template-areas: "sidebar header" "sidebar main";
+    grid-template-rows: 1fr;
+    grid-template-areas: "sidebar main";
     height: 100vh;
   }
   .sidebar {
@@ -291,7 +291,7 @@
   .grid-3 { grid-template-columns: 2fr 1fr 1fr; }
   .grid-2 { grid-template-columns: 1fr 1fr; }
   .grid-4 { grid-template-columns: repeat(4, 1fr); }
-  .grid-bal { grid-template-columns: 1.4fr 1fr 1fr 1fr; }
+  .grid-bal { grid-template-columns: 1.4fr 1fr 1fr; }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; }
   .card-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
   .card-h h3 { margin: 0; font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
@@ -357,7 +357,7 @@
   .tx-amt.neg { color: var(--danger); }
   .tx-amt.neutral { color: var(--ink); }
 
-  .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .quick-actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .quick-action {
     padding: 16px 12px; background: var(--surface); border: 1px solid var(--border);
     border-radius: 14px; display: flex; flex-direction: column; align-items: center; gap: 10px;
@@ -497,7 +497,7 @@
   .empty h3 { color: var(--ink); margin: 0 0 6px; font-size: 17px; }
   .empty p { margin: 0 0 18px; font-size: 14px; max-width: 320px; margin-inline: auto; }
 
-  @media (max-width: 1180px) { .grid-bal { grid-template-columns: 1fr 1fr 1fr; } .grid-bal > .balance-hero { grid-column: 1 / -1; } }
+  @media (max-width: 1180px) { .grid-bal { grid-template-columns: 1fr 1fr; } .grid-bal > .balance-hero { grid-column: 1 / -1; } }
   @media (max-width: 1080px) { .grid-3 { grid-template-columns: 1fr 1fr; } .grid-3 > .card.chart-card { grid-column: 1 / -1 !important; } }
   @media (max-width: 900px) { .login { grid-template-columns: 1fr; } .login-side { display: none; } .app { grid-template-columns: 64px 1fr; } .sidebar .side-label, .side-section, .side-profile .who { display: none; } .grid-3, .grid-bal, .grid-4 { grid-template-columns: 1fr 1fr; } .grid-bal > .balance-hero { grid-column: 1 / -1; } .grid-2 { grid-template-columns: 1fr; } }
 </style>
@@ -542,6 +542,16 @@ const I = {
 
 const brl = (n) => 'R$ ' + Math.abs(n).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const k = (n) => n.toLocaleString('pt-BR');
+
+const formatBRLInput = (v) => {
+  let raw = v.replace(/[^\d,]/g, '');
+  const parts = raw.split(',');
+  const intPart = parts[0] || '';
+  const decPart = parts[1];
+  const fmtInt = intPart ? intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '';
+  return decPart !== undefined ? fmtInt + ',' + decPart.slice(0, 2) : fmtInt;
+};
+const parseBRLInput = (v) => parseFloat((v||'').replace(/\./g,'').replace(',','.')) || 0;
 
 function Login({ onSubmit }) {
   const [tab, setTab] = useState('entrar');
@@ -603,41 +613,15 @@ function Login({ onSubmit }) {
   );
 }
 
-const ACCOUNTS = [
-  { name: 'Nubank',   color: 'oklch(0.55 0.2 305)',   balance: 4280.42 },
-  { name: 'Itaú',    color: 'oklch(0.7 0.18 50)',     balance: 3120.50 },
-  { name: 'Inter',   color: 'oklch(0.65 0.2 30)',     balance: 2150.00 },
-  { name: 'Carteira',color: 'oklch(0.55 0.02 240)',   balance: 987.00  },
-];
+const ACCOUNTS = [];
 const TOTAL = ACCOUNTS.reduce((s, a) => s + a.balance, 0);
 
-const ALL_TX = [
-  { date:'13/10/2025', title:'Venda de roupas',     cat:'Vendas',     acc:'Nubank',   value:250,    type:'in' },
-  { date:'13/10/2025', title:'Compra de produtos',  cat:'Mercado',    acc:'Nubank',   value:-46,    type:'out' },
-  { date:'12/10/2025', title:'Hora extra',          cat:'Salário',    acc:'Itaú',     value:450,    type:'in' },
-  { date:'12/10/2025', title:'Almoço churrascaria', cat:'Alimentação',acc:'Nubank',   value:-37.50, type:'out' },
-  { date:'10/10/2025', title:'Locomoção UBER',      cat:'Transporte', acc:'Nubank',   value:-25.90, type:'out' },
-  { date:'10/10/2025', title:'Pix recebido',        cat:'Outros',     acc:'Inter',    value:87.50,  type:'in' },
-  { date:'08/10/2025', title:'Salário mensal',      cat:'Salário',    acc:'Itaú',     value:6000,   type:'in' },
-  { date:'05/10/2025', title:'Venda de bolo',       cat:'Vendas',     acc:'Carteira', value:35.50,  type:'in' },
-  { date:'03/10/2025', title:'Aporte Tesouro IPCA', cat:'Investim.',  acc:'Inter',    value:-800,   type:'invest' },
-  { date:'02/10/2025', title:'Fatura cartão',       cat:'Dívida',     acc:'Nubank',   value:-1240,  type:'debt' },
-];
+const ALL_TX = [];
 
 
-const INVESTMENTS = [
-  { name:'Tesouro IPCA+ 2029', type:'Renda fixa', value:4280.10, rendDelta:5.2,   total:280.10  },
-  { name:'CDB Banco Inter',     type:'Renda fixa', value:3450.00, rendDelta:4.1,   total:150.00  },
-  { name:'ITSA4',               type:'Ações',      value:2150.50, rendDelta:8.7,   total:178.50  },
-  { name:'BOVA11',              type:'ETF',        value:1620.00, rendDelta:-2.3,  total:-38.00  },
-  { name:'Bitcoin',             type:'Cripto',     value:980.20,  rendDelta:12.4,  total:108.20  },
-];
+const INVESTMENTS = [];
 
-const DEBTS = [
-  { name:'Cartão Nubank',      total:3450, paid:2210, monthly:410, parcelas:'4 de 12' },
-  { name:'Financiamento moto', total:8800, paid:4400, monthly:550, parcelas:'8 de 16' },
-  { name:'Empréstimo amigo',   total:1500, paid:500,  monthly:250, parcelas:'2 de 6'  },
-];
+const DEBTS = [];
 
 const CAT_COLORS = {
   'Mercado':'oklch(0.62 0.15 155)','Alimentação':'oklch(0.7 0.16 60)',
@@ -662,7 +646,7 @@ function Sidebar({ active, setActive, onLogout }) {
         <span>HelpFy<span style={{color:'var(--accent)'}}>.</span></span>
       </a>
       <div className="side-section">Principal</div>
-      {NAV.slice(0,6).map(n => (
+      {NAV.slice(0,1).map(n => (
         <button key={n.id} className={`side-item ${active===n.id?'active':''}`} onClick={() => setActive(n.id)}>
           <span className="side-ico">{n.ico}</span>
           <span className="side-label">{n.label}</span>
@@ -748,38 +732,35 @@ function Dashboard({ goTo, onAdd }) {
         <div className="balance-hero">
           <div className="label">Saldo consolidado<button title="Ocultar"><I.Eye style={{width:14,height:14}}/></button></div>
           <div className="balance-val">{brl(TOTAL)}</div>
-          <div className="balance-delta">↑ +R$ 1.243,50 este mês</div>
-          <div className="balance-row">
-            <div style={{display:'flex',flexWrap:'wrap',gap:6}}>
-              {ACCOUNTS.map(a=><span key={a.name} className="acc-chip"><span className="d" style={{background:a.color}}></span>{a.name}</span>)}
-            </div>
-          </div>
+          <div className="balance-delta">—</div>
         </div>
         <div className="stat-card">
           <div className="label"><span className="ico"><I.Income style={{width:14,height:14}}/></span>Receitas<small style={{marginLeft:'auto',textTransform:'none',letterSpacing:0,fontWeight:500,color:'var(--ink-3)'}}>· Out</small></div>
-          <div className="val">{brl(8950)}</div>
-          <div className="delta up">↑ 6,5% vs mês anterior</div>
+          <div className="val">{brl(0)}</div>
+          <div className="delta neutral">—</div>
         </div>
         <div className="stat-card">
           <div className="label"><span className="ico danger"><I.Expense style={{width:14,height:14}}/></span>Gastos</div>
-          <div className="val">{brl(5640)}</div>
-          <div className="delta down">↑ 4,4% vs mês anterior</div>
-        </div>
-        <div className="stat-card">
-          <div className="label"><span className="ico info"><I.Invest style={{width:14,height:14}}/></span>Investido</div>
-          <div className="val">{brl(12480)}</div>
-          <div className="delta up">↑ R$ 678 este mês</div>
+          <div className="val">{brl(0)}</div>
+          <div className="delta neutral">—</div>
         </div>
       </div>
 
       <div className="card">
         <div className="card-h"><h3>Ações rápidas</h3><span className="card-h-sub">Adicione em 1 toque</span></div>
         <div className="quick-actions">
-          {[{ico:<I.Income/>,label:'Adicionar receita',kind:'receita'},{ico:<I.Expense/>,label:'Adicionar gasto',kind:'gasto'},{ico:<I.Invest/>,label:'Novo aporte',kind:'aporte'}].map(a=>(
-            <button key={a.label} className="quick-action" onClick={() => onAdd(a.kind)}>
-              <span className="qa-ico">{a.ico}</span><span>{a.label}</span>
-            </button>
-          ))}
+          <button className="quick-action" onClick={() => onAdd('receita')}>
+            <span className="qa-ico" style={{background:'var(--accent-soft)',color:'var(--accent)'}}>
+              <svg viewBox="0 0 24 24" fill="none" width="20" height="20"><path d="M12 4v16m0 0l-6-6m6 6l6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </span>
+            <span>Adicionar receita</span>
+          </button>
+          <button className="quick-action" onClick={() => onAdd('gasto')}>
+            <span className="qa-ico" style={{background:'var(--danger-soft)',color:'var(--danger)'}}>
+              <svg viewBox="0 0 24 24" fill="none" width="20" height="20"><path d="M12 20V4m0 0l-6 6m6-6l6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </span>
+            <span>Adicionar gasto</span>
+          </button>
         </div>
       </div>
 
@@ -844,17 +825,17 @@ function Dividas() {
         <div className="balance-hero" style={{background:'linear-gradient(135deg, oklch(0.62 0.18 25) 0%, oklch(0.45 0.18 25) 100%)'}}>
           <div className="label">Total devedor</div>
           <div className="balance-val">{brl(totalDebt)}</div>
-          <div className="balance-delta" style={{color:'oklch(0.95 0.04 25)'}}>3 contratos ativos</div>
+          <div className="balance-delta" style={{color:'oklch(0.95 0.04 25)'}}>0 contratos ativos</div>
         </div>
         <div className="stat-card">
           <div className="label"><span className="ico warn"><I.Card style={{width:14,height:14}}/></span>Parcela mensal</div>
           <div className="val">{brl(totalMonthly)}</div>
-          <div className="delta neutral">próximo vencimento dia 25</div>
+          <div className="delta neutral">—</div>
         </div>
         <div className="stat-card">
           <div className="label"><span className="ico"><I.Goal style={{width:14,height:14}}/></span>Liberdade em</div>
-          <div className="val">14 meses</div>
-          <div className="delta up">+ 2 meses mais rápido com aporte extra</div>
+          <div className="val">—</div>
+          <div className="delta neutral">—</div>
         </div>
       </div>
       <div className="grid grid-2">
@@ -895,13 +876,13 @@ function Investimentos({ onAdd }) {
         </div>
         <div className="stat-card">
           <div className="label"><span className="ico info"><I.Chart style={{width:14,height:14}}/></span>Rentabilidade mês</div>
-          <div className="val">+5,2%</div>
-          <div className="delta up">acima do CDI (&gt;+3,8%)</div>
+          <div className="val">0,0%</div>
+          <div className="delta neutral">—</div>
         </div>
         <div className="stat-card">
           <div className="label"><span className="ico"><I.Coins style={{width:14,height:14}}/></span>Aporte do mês</div>
-          <div className="val">{brl(800)}</div>
-          <div className="delta neutral">Tesouro IPCA · 03/10</div>
+          <div className="val">{brl(0)}</div>
+          <div className="delta neutral">—</div>
         </div>
       </div>
       <div className="grid grid-3">
@@ -1005,7 +986,7 @@ function AmountField({ value, onChange, color, helper }) {
       <div className="lbl">Valor</div>
       <div className="val">
         <small>R$</small>
-        <input className="val-edit" type="number" inputMode="decimal" min="0" step="0.01" value={value} onChange={(e)=>onChange(e.target.value)}/>
+        <input className="val-edit" type="text" inputMode="numeric" placeholder="0" value={value} onChange={(e)=>onChange(e.target.value)}/>
       </div>
       {helper && <div className="helper">{helper}</div>}
     </div>
@@ -1013,22 +994,18 @@ function AmountField({ value, onChange, color, helper }) {
 }
 
 function ReceitaModal({ onClose, onSubmit }) {
-  const [num,setNum]=useState(450);
+  const [num,setNum]=useState('');
   const [date,setDate]=useState('hoje');
-  const [bank,setBank]=useState('Nubank');
   const [cat,setCat]=useState('Vendas');
   const [desc,setDesc]=useState('');
   return (
-    <Modal ico={<I.Income/>} title="Nova receita" sub={`Entrada de dinheiro · ${today()}`} onClose={onClose} onSubmit={()=>onSubmit({num,date,bank,cat,desc})} submitLabel="Adicionar receita" accent="in" canSubmit={num>0}>
-      <AmountField value={num} onChange={(v)=>setNum(Number(v)||0)} color="accent" helper="Use ponto para os centavos · ex: 450.00"/>
+    <Modal ico={<I.Income/>} title="Nova receita" sub={`Entrada de dinheiro · ${today()}`} onClose={onClose} onSubmit={()=>onSubmit({num:parseBRLInput(num),date,cat,desc})} submitLabel="Adicionar receita" accent="in" canSubmit={parseBRLInput(num)>0}>
+      <AmountField value={num} onChange={(v)=>setNum(formatBRLInput(v))} color="accent" helper="Use vírgula para centavos · ex: 1.450,00"/>
       <div className="field"><label className="field-label">Data da entrada</label>
         <div className="date-row">
           {[{k:'ontem',l:'Ontem'},{k:'hoje',l:'Hoje'},{k:'amanha',l:'Amanhã'}].map(d=><button key={d.k} className={`date-pill ${date===d.k?'active':''}`} onClick={()=>setDate(d.k)}>{d.l}</button>)}
           <input className="date-pill" type="date" defaultValue={isoDate()} onChange={()=>setDate('custom')} style={{padding:'6px 10px'}}/>
         </div>
-      </div>
-      <div className="field"><label className="field-label">Conta</label>
-        <div className="pick-grid">{BANK_OPTS.map(b=><button key={b.name} className={`pick-card ${bank===b.name?'active':''}`} onClick={()=>setBank(b.name)}><span className="pick-card-ico dot" style={{background:b.color}}></span><span>{b.name}</span></button>)}</div>
       </div>
       <div className="field"><label className="field-label">Categoria</label>
         <div className="chip-select">{CATS_IN.map(c=><button key={c} className={`chip-opt ${cat===c?'active':''}`} onClick={()=>setCat(c)}>{c}</button>)}</div>
@@ -1041,23 +1018,19 @@ function ReceitaModal({ onClose, onSubmit }) {
 }
 
 function GastoModal({ onClose, onSubmit }) {
-  const [num,setNum]=useState(46);
+  const [num,setNum]=useState('');
   const [date,setDate]=useState('hoje');
-  const [bank,setBank]=useState('Nubank');
   const [cat,setCat]=useState('Mercado');
   const [desc,setDesc]=useState('');
   const [recurring,setRecurring]=useState(false);
   return (
-    <Modal ico={<I.Expense/>} title="Novo gasto" sub={`Saída de despesa · ${today()}`} onClose={onClose} onSubmit={()=>onSubmit({num,date,bank,cat,desc,recurring})} submitLabel="Adicionar gasto" accent="out" canSubmit={num>0}>
-      <AmountField value={num} onChange={(v)=>setNum(Number(v)||0)} color="danger out" helper="O valor será subtraído do saldo da conta"/>
+    <Modal ico={<I.Expense/>} title="Novo gasto" sub={`Saída de despesa · ${today()}`} onClose={onClose} onSubmit={()=>onSubmit({num:parseBRLInput(num),date,cat,desc,recurring})} submitLabel="Adicionar gasto" accent="out" canSubmit={parseBRLInput(num)>0}>
+      <AmountField value={num} onChange={(v)=>setNum(formatBRLInput(v))} color="danger out" helper="Use vírgula para centavos · ex: 1.450,00"/>
       <div className="field"><label className="field-label">Data da saída</label>
         <div className="date-row">
           {[{k:'ontem',l:'Ontem'},{k:'hoje',l:'Hoje'},{k:'amanha',l:'Amanhã'}].map(d=><button key={d.k} className={`date-pill ${date===d.k?'active':''}`} onClick={()=>setDate(d.k)}>{d.l}</button>)}
           <input className="date-pill" type="date" defaultValue={isoDate()} onChange={()=>setDate('custom')} style={{padding:'6px 10px'}}/>
         </div>
-      </div>
-      <div className="field"><label className="field-label">Conta de origem</label>
-        <div className="pick-grid">{BANK_OPTS.map(b=><button key={b.name} className={`pick-card ${bank===b.name?'active':''}`} onClick={()=>setBank(b.name)}><span className="pick-card-ico dot" style={{background:b.color}}></span><span>{b.name}</span></button>)}</div>
       </div>
       <div className="field"><label className="field-label">Categoria</label>
         <div className="chip-select">{CATS_OUT.map(c=><button key={c} className={`chip-opt ${cat===c?'active':''}`} onClick={()=>setCat(c)}>{c}</button>)}</div>
@@ -1141,7 +1114,6 @@ function AppShell({ onLogout }) {
   return (
     <div className="app">
       <Sidebar active={active} setActive={setActive} onLogout={onLogout}/>
-      <Header active={active} onAdd={setModal}/>
       <main className="main" key={active}><div className="fade-in">{Page}</div></main>
       {modal==='receita'  && <ReceitaModal  onClose={()=>setModal(null)} onSubmit={()=>handleSubmit('receita')}/>}
       {modal==='gasto'    && <GastoModal    onClose={()=>setModal(null)} onSubmit={()=>handleSubmit('gasto')}/>}
