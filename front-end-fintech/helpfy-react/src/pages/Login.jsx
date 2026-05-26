@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import * as I from '../components/Icons'
+import { register } from "../api/users"
 
 export default function Login() {
   const { login } = useAuth()
@@ -12,16 +13,23 @@ export default function Login() {
   const [showPw, setShowPw] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [name, setName] = useState('')
+
 
   const submit = async e => {
-    e.preventDefault()
+/*    e.preventDefault()
     if (!email || !password) { setError('Preencha todos os campos.'); return }
     setLoading(true)
     setError('')
     setTimeout(() => {
       login(email, password)
       navigate('/')
-    }, 600)
+    }, 600)*/
+    if(tab === 'criar') {
+      e.preventDefault();
+      const postUser = await register(email, password, name)
+      console.log(postUser)
+    }
   }
 
   return (
@@ -62,7 +70,7 @@ export default function Login() {
             {tab === 'criar' && (
               <div className="field" style={{ marginBottom: 14 }}>
                 <label className="field-label">Nome completo</label>
-                <input className="field-input" type="text" placeholder="Como devemos te chamar" />
+                <input className="field-input" onChange={e => setName(e.target.value)} type="text" placeholder="Como devemos te chamar" />
               </div>
             )}
             <div className="field" style={{ marginBottom: 14 }}>

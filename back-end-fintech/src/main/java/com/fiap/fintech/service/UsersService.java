@@ -1,6 +1,6 @@
 package com.fiap.fintech.service;
 
-import com.fiap.fintech.dto.UsersResponseDTO;
+import com.fiap.fintech.DTO.UsersResponseDTO;
 import com.fiap.fintech.model.Users;
 import com.fiap.fintech.repository.UsersRepository;
 import jakarta.transaction.Transactional;
@@ -16,10 +16,6 @@ import java.util.Optional;
 public class UsersService {
 
     private final UsersRepository usersRepository;
-
-    public UsersService(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
-    }
 
     public List<UsersResponseDTO> getAllUsers() {
         return usersRepository.findAll()
@@ -42,6 +38,8 @@ public class UsersService {
         Users saved = usersRepository.save(user);
         return new UsersResponseDTO(
                 saved.getUserid()
+        );
+    }
 
     public Boolean validateUserExist(String userId) {
         return usersRepository.existsById(userId);

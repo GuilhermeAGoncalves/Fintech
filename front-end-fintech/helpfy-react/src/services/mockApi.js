@@ -14,7 +14,7 @@ const nextId = items => (items.length ? Math.max(...items.map(i => i.id)) + 1 : 
 
 // ── Dados iniciais ──────────────────────────────────────────
 
-const SEED_GASTOS = [
+let SEED_GASTOS = [
   { id: 1, descricao: 'Almoço churrascaria', valor: 37.50, categoria: 'Alimentação', conta: 'Nubank', data: '2025-10-12' },
   { id: 2, descricao: 'Compra mercado',      valor: 46.00, categoria: 'Mercado',     conta: 'Nubank', data: '2025-10-13' },
   { id: 3, descricao: 'Locomoção UBER',      valor: 25.90, categoria: 'Transporte',  conta: 'Nubank', data: '2025-10-10' },

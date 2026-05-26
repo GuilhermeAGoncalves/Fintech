@@ -1,0 +1,235 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: Fintech-api
+meta:
+  id: wrk_057a60e1bdca4a0cb419e9d2161c6d61
+  created: 1779077052249
+  modified: 1779077052249
+  description: ""
+collection:
+  - name: Usuarios
+    meta:
+      id: fld_7adee6dc1dfb412caa346499b5e9be3f
+      created: 1779598073712
+      modified: 1779661403419
+      sortKey: -1779598073762
+      description: ""
+    children:
+      - url: http://localhost:8080/api/users
+        name: Criar usuario api/users
+        meta:
+          id: req_80b526381c1641ed80f36f2f2a6dc363
+          created: 1779077061303
+          modified: 1779598086864
+          isPrivate: false
+          description: ""
+          sortKey: -1779598085134
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Guilherme Araújo",
+              "email": "guilherme@email.com",
+              "password": "senhaSegura123"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/users
+        name: Recuperar todos os usuarios
+        meta:
+          id: req_8e9bd41fe30a4d2e80e6aa468d07cc8c
+          created: 1779077290637
+          modified: 1779661405499
+          isPrivate: false
+          description: ""
+          sortKey: -1779598085034
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Contas
+    meta:
+      id: fld_2e66b870545c4fdf8b4d2b539571e3f3
+      created: 1779662008625
+      modified: 1779662008625
+      sortKey: -1779662008625
+      description: ""
+    children:
+      - url: http://localhost:8080/api/accounts/7a3fa27b-1327-4fad-a541-e8da7a87066d
+        name: Criar conta api/accounts
+        meta:
+          id: req_7cb8a6a95d8946ef875a2cfe9d95273f
+          created: 1779077400000
+          modified: 1779662061522
+          isPrivate: false
+          description: ""
+          sortKey: -1779662016526
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Conta Corrente",
+              "initialBalance": 1000.00,
+              "accountType": "CORRENTE",
+              "color": "blue",
+              "isActive": true
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/accounts/7a3fa27b-1327-4fad-a541-e8da7a87066d
+        name: Buscar contas por usuario
+        meta:
+          id: req_6b2af5b95b6b425db99f12f88a1fe73f
+          created: 1779077500000
+          modified: 1779662050961
+          isPrivate: false
+          description: ""
+          sortKey: -1779662016426
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: transação
+    meta:
+      id: fld_8f056981b2bd453b9783a68686c88330
+      created: 1779662740564
+      modified: 1779662740564
+      sortKey: -1779662740564
+      description: ""
+    children:
+      - url: localhost:8080/api/transactions/create
+        name: New Request
+        meta:
+          id: req_5fda5a2cfecf40ce832465c78554a027
+          created: 1779662730603
+          modified: 1779664338466
+          isPrivate: false
+          description: ""
+          sortKey: -1779662747060
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "userId": "7a3fa27b-1327-4fad-a541-e8da7a87066d",
+              "categoryId": "f6fb6d18-3c71-48e2-a90c-7abf9c7ddff1",
+              "accountId": "f7938077-1b96-4d88-ac96-65dfa99ed611",
+              "description": "Salário mensal",
+              "amount": 100.50,
+              "dtTransaction": "2026-05-24T10:30:00",
+              "status": "FEITO"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Categorias
+    meta:
+      id: fld_5c5c939ebfc74b29840a827fdbec7be7
+      created: 1779663243415
+      modified: 1779663243415
+      sortKey: -1779663243415
+      description: ""
+    children:
+      - url: localhost:8080/api/categories
+        name: New Request
+        meta:
+          id: req_54a3a90880d64445b6196f3bcd84601e
+          created: 1779663246903
+          modified: 1779663351425
+          isPrivate: false
+          description: ""
+          sortKey: -1779663246903
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Salario",
+            	"type": "REVENUE"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_ea5275d63684078773bb822f3b38701b64e1a7e2
+    created: 1779077052251
+    modified: 1779077052251
+environments:
+  name: Base Environment
+  meta:
+    id: env_ea5275d63684078773bb822f3b38701b64e1a7e2
+    created: 1779077052250
+    modified: 1779077489296
+    isPrivate: false
+  data:
+    BASE_URL: ""
