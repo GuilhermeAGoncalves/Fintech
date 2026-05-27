@@ -19,8 +19,8 @@ public class UsersController {
     private final UsersService usersService;
 
     @PostMapping("/login")
-    public ResponseEntity<Boolean> validateUser(@RequestBody LoginDTO loginDTO) {
-        boolean isValid = usersService.validateUser(loginDTO);
+    public ResponseEntity<Users> validateUser(@RequestBody LoginDTO loginDTO) {
+        Users isValid = usersService.validateUser(loginDTO);
         return ResponseEntity.ok(isValid);
     }
 
@@ -34,13 +34,9 @@ public class UsersController {
         }
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getUserInfo(@PathVariable String userId) {
-        try {
-            Optional<Users> users = usersService.getUserById(userId);
-            return ResponseEntity.ok(users);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
-        }
+    @GetMapping
+    public ResponseEntity<List<UsersResponseDTO>> getAllUsers() {
+        List<UsersResponseDTO> users = usersService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
 }

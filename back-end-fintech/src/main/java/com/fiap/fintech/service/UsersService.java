@@ -41,9 +41,17 @@ public class UsersService {
         );
     }
 
-    public boolean validateUser(LoginDTO loginDTO) {
+    public Users validateUser(LoginDTO loginDTO) {
         Optional<Users> userOpt = usersRepository.findByEmail(loginDTO.email());
-        return userOpt.map(user -> user.getPassword().equals(loginDTO.password())).orElse(false);
+        if (userOpt.isEmpty()) {
+            throw new IllegalArgumentException("Invalid email or password");
+        }
+        Users user = userOpt.get();
+        if (!user.getPassword().equals(loginDTO.password())) {
+            throw new IllegalArgumentException("Invalid email or password");
+        }
+        return user;
+
     }
 
 
