@@ -1,11 +1,9 @@
 package com.fiap.fintech.controller;
 
-
 import com.fiap.fintech.DTO.CreateTransactionDTO;
 import com.fiap.fintech.service.TransactionsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,14 +13,13 @@ public class TransactionsController {
 
     private final TransactionsService transactionsService;
 
-
     @PostMapping("/create")
     public ResponseEntity<String> createTransaction(@RequestBody CreateTransactionDTO transactionData) {
         try {
             transactionsService.createTransaction(transactionData);
             return ResponseEntity.ok("Transaction created successfully");
         } catch (Exception e) {
-            throw new RuntimeException("Error creating transaction", e);
+            return ResponseEntity.badRequest().body("Error creating transaction: " + e.getMessage());
         }
     }
 
@@ -31,7 +28,7 @@ public class TransactionsController {
         try {
             return ResponseEntity.ok(transactionsService.getTransactionsByUser(userid));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error fetching transactions for user: " + userid);
-         }
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
     }
 }
