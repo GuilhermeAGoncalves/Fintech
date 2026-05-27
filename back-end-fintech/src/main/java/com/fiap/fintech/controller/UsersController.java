@@ -1,6 +1,6 @@
 package com.fiap.fintech.controller;
 
-import com.fiap.fintech.dto.UsersResponseDTO;
+import com.fiap.fintech.DTO.UsersResponseDTO;
 import com.fiap.fintech.model.Users;
 import com.fiap.fintech.service.UsersService;
 import lombok.AllArgsConstructor;
@@ -16,13 +16,13 @@ public class UsersController {
 
     private final UsersService usersService;
 
-    @GetMapping
+    @PostMapping("/login")
     public ResponseEntity<List<UsersResponseDTO>> getAllUsers() {
         List<UsersResponseDTO> users = usersService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<?> create(@RequestBody Users user) {
         try {
             UsersResponseDTO createdUser = usersService.saveUser(user);

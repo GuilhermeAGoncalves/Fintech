@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:api.anthropic.com)",
+      "PowerShell($binFile = \"C:\\\\Users\\\\Acer\\\\.claude\\\\projects\\\\C--Users-Acer-Desktop-PROGRAMACAO-HELPFY-HELPFY-PROJECT\\\\c9463cd9-9ada-43f6-832b-192d61a2efda\\\\tool-results\\\\webfetch-1779233532690-tv1p5f.bin\"; $outDir = \"C:\\\\Users\\\\Acer\\\\Desktop\\\\PROGRAMACAO\\\\HELPFY\\\\design_extract2\"; New-Item -ItemType Directory -Force -Path $outDir | Out-Null; Copy-Item $binFile \"$outDir\\\\design.gz\"; tar -xzf \"$outDir\\\\design.gz\" -C $outDir 2>&1; Get-ChildItem -Recurse $outDir | Where-Object { -not $_.PSIsContainer } | Select-Object FullName, Length | Format-Table -AutoSize)",
+      "Bash(powershell -Command \"\\(Get-Content 'C:\\\\Users\\\\Acer\\\\Desktop\\\\PROGRAMACAO\\\\HELPFY\\\\HELPFY_PROJECT\\\\helpfy\\\\system.html' | Measure-Object -Line\\).Lines; \\(Get-Content 'C:\\\\Users\\\\Acer\\\\Desktop\\\\PROGRAMACAO\\\\HELPFY\\\\HELPFY_PROJECT\\\\helpfy\\\\index.html' | Measure-Object -Line\\).Lines\")",
+      "Bash(npm install *)",
+      "Bash(npm run *)"
+    ]
+  }
+}

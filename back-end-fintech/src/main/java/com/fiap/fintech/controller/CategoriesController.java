@@ -1,5 +1,6 @@
 package com.fiap.fintech.controller;
 
+import com.fiap.fintech.DTO.CreateCategoriesDTO;
 import com.fiap.fintech.model.Categories;
 import com.fiap.fintech.service.CategoriesService;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ public class CategoriesController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createCategory(@RequestBody Categories category) {
+    public ResponseEntity<?> createCategory(@RequestBody CreateCategoriesDTO category) {
         try {
             Categories created = categoryService.createCategory(category);
             return ResponseEntity.ok(created);

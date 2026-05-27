@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -24,6 +26,11 @@ public class Categories {
 
     @Column(name = "TYPE", nullable = false, length = 10)
     private CategoriesEnum type;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "FT_USERS_USERID", nullable = false)
+    private Users User;
 
 
 }
