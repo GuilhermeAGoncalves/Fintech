@@ -48,7 +48,7 @@ O front-end utiliza React com Vite para garantir uma performance incrível.
 4. A interface estará disponível no seu navegador em **http://localhost:5173**.
 
 ## 👨‍💻 Créditos
-* **Desenvolvido por:** Guilherme De Araújo Gonçalves
+* **Desenvolvido por:** Guilherme De Araújo Gonçalves | João Lucas De Souza | Lucca Modena | Daher Krishna Gilson
 * **Cargo:** Back-End Developer Pleno | Estudante de ADS na FIAP
 
 ---

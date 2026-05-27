@@ -45,7 +45,7 @@ The frontend is a fast and modern React application powered by Vite.
 4. The application will be accessible at **http://localhost:5173**.
 
 ## 👨‍💻 Credits
-* **Developed by:** Guilherme De Araújo Gonçalves, 
+* **Developed by:** Guilherme De Araújo Gonçalves | João Lucas De Souza | Lucca Modena | Daher Krishna Gilson 
 * **Role:** Back-End Developer & ADS Student at FIAP
 
 ---
