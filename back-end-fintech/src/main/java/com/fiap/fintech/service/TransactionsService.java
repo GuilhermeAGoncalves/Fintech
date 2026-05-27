@@ -1,6 +1,5 @@
 package com.fiap.fintech.service;
 
-
 import com.fiap.fintech.DTO.CreateTransactionDTO;
 import com.fiap.fintech.model.Accounts;
 import com.fiap.fintech.model.Categories;
@@ -25,11 +24,13 @@ public class TransactionsService {
     private AccountsRepository accountsRepository;
     private CategoriesRepository categoriesRepository;
 
+    @Transactional
     public List<Transactions> getTransactionsByUser(String userid) {
         try {
-            return transactionRepository.findByUser_Userid(userid);
+            return transactionRepository.findByUserId(userid);
         } catch (Exception e) {
-            throw new RuntimeException("Error fetching transactions for user: " + userid, e);
+            e.printStackTrace();
+            throw new RuntimeException("Error fetching transactions for user: " + userid + " | " + e.getMessage(), e);
         }
     }
 
@@ -68,6 +69,4 @@ public class TransactionsService {
         return categoriesRepository.findById(categoryId)
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));
     }
-
-
 }

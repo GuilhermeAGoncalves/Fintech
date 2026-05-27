@@ -5,7 +5,6 @@ import com.fiap.fintech.model.Categories;
 import com.fiap.fintech.model.Users;
 import com.fiap.fintech.repository.CategoriesRepository;
 import lombok.AllArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

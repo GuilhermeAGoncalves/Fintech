@@ -16,6 +16,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Categories {
+
     @Id
     @Column(name = "CATEGORYID", nullable = false)
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -31,6 +32,4 @@ public class Categories {
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "FT_USERS_USERID", nullable = false)
     private Users User;
-
-
 }
