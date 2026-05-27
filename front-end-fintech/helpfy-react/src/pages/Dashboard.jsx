@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
-import { gastosApi, receitasApi } from '../services/mockApi'
+import { listGastos, listReceitas } from '../api/transctions'
 import * as I from '../components/Icons'
 
 const brl = n => 'R$ ' + Math.abs(n).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -11,11 +11,12 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    Promise.all([gastosApi.list(), receitasApi.list()])
+    Promise.all([listGastos(), listReceitas()])
       .then(([gastos, receitas]) => {
         setData({ gastos, receitas })
         setLoading(false)
       })
+      .catch(() => setLoading(false))
   }, [])
 
   const totalReceitas = data.receitas.reduce((s, r) => s + r.valor, 0)

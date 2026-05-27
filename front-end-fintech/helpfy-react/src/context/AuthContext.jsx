@@ -1,8 +1,7 @@
 import { createContext, useContext, useState } from 'react'
+import { login as apiLogin } from '../api/users'
 
 const AuthContext = createContext(null)
-
-const FAKE_USER = { name: 'Lucca Modena', email: 'lucca@helpfy.com.br', plan: 'Gratuito' }
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
@@ -10,14 +9,20 @@ export function AuthProvider({ children }) {
     return stored ? JSON.parse(stored) : null
   })
 
-  const login = (email, _password) => {
-    const u = { ...FAKE_USER, email }
+  const login = async (email, password) => {
+    const data = await apiLogin(email, password)
+    const u = {
+      name: data.name || email.split('@')[0],
+      email: data.email || email,
+      plan: data.plan || 'Gratuito',
+    }
     sessionStorage.setItem('helpfy_user', JSON.stringify(u))
     setUser(u)
   }
 
   const logout = () => {
     sessionStorage.removeItem('helpfy_user')
+    localStorage.removeItem('userId')
     setUser(null)
   }
 

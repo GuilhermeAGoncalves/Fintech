@@ -17,18 +17,23 @@ export default function Login() {
 
 
   const submit = async e => {
-/*    e.preventDefault()
+    e.preventDefault()
     if (!email || !password) { setError('Preencha todos os campos.'); return }
+    if (tab === 'criar' && !name) { setError('Informe seu nome.'); return }
     setLoading(true)
     setError('')
-    setTimeout(() => {
-      login(email, password)
-      navigate('/')
-    }, 600)*/
-    if(tab === 'criar') {
-      e.preventDefault();
-      const postUser = await register(email, password, name)
-      console.log(postUser)
+    try {
+      if (tab === 'criar') {
+        await register(email, password, name)
+        setTab('entrar')
+      } else {
+        await login(email, password)
+        navigate('/')
+      }
+    } catch (err) {
+      setError(err?.response?.data?.message || 'E-mail ou senha inválidos.')
+    } finally {
+      setLoading(false)
     }
   }
 
