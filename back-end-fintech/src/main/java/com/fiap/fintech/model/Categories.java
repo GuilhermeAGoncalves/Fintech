@@ -25,5 +25,12 @@ public class Categories {
     @Column(name = "TYPE", nullable = false, length = 10)
     private CategoriesEnum type;
 
+<<<<<<< Updated upstream
 
+=======
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "FT_USERS_USERID", nullable = false)
+    private Users user;
+>>>>>>> Stashed changes
 }
