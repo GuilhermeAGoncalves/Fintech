@@ -1,4 +1,4 @@
-package com.fiap.fintech.dto;
+package com.fiap.fintech.DTO;
 
 import com.fiap.fintech.Enum.CategoriesEnum;
 

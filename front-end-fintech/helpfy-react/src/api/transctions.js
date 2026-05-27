@@ -15,6 +15,11 @@ export const listGastos = async () => {
   return data
 }
 
+export const listByCategories = async (categories) => {
+  const { data } = await client.get('/api/transactions', { params: { tipo: 'GASTO' } })
+  return data
+}
+
 export const getTransaction = async (id) => {
   const { data } = await client.get(`/api/transactions/${id}`)
   return data

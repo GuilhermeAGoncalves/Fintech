@@ -1,11 +1,11 @@
 package com.fiap.fintech.service;
 
+import com.fiap.fintech.DTO.LoginDTO;
 import com.fiap.fintech.DTO.UsersResponseDTO;
 import com.fiap.fintech.model.Users;
 import com.fiap.fintech.repository.UsersRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,8 +41,12 @@ public class UsersService {
         );
     }
 
-    public Boolean validateUserExist(String userId) {
-        return usersRepository.existsById(userId);
+    public boolean validateUser(LoginDTO loginDTO) {
+        Optional<Users> userOpt = usersRepository.findByEmail(loginDTO.email());
+        return userOpt.map(user -> user.getPassword().equals(loginDTO.password())).orElse(false);
     }
+
+
+
 
 }
