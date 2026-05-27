@@ -1,19 +1,25 @@
-import axios from 'axios';
+import client from './httpClient'
 
-const API_BASE_URL = "http://localhost:8080/api/transactions";
+export const listAccounts = async (userId) => {
+  const { data } = await client.get(`/api/accounts/user/${userId}`)
+  return data
+}
 
-const instance = axios.create({
-    baseURL: API_BASE_URL,
-    timeout: 1000,
-});
+export const getAccount = async (accountId) => {
+  const { data } = await client.get(`/api/accounts/${accountId}`)
+  return data
+}
 
+export const createAccount = async (userId, accountData) => {
+  const { data } = await client.post(`/api/accounts/${userId}`, accountData)
+  return data
+}
 
-export const createAccount = async (userid, name, initialBalance, accountType, color, isActive) => {
-    try {
-        const response = await instance.post(`/${userid}`, {name, initialBalance, accountType, color, isActive});
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching data: ', error);
-        throw error;
-    }
-};
+export const updateAccount = async (accountId, updates) => {
+  const { data } = await client.put(`/api/accounts/${accountId}`, updates)
+  return data
+}
+
+export const deleteAccount = async (accountId) => {
+  await client.delete(`/api/accounts/${accountId}`)
+}
