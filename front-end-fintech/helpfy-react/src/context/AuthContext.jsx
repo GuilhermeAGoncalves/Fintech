@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react'
-import { login as apiLogin } from '../api/users'
+import { login as apiLogin, register as apiRegister } from '../api/users'
 
 const AuthContext = createContext(null)
 
@@ -12,9 +12,20 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     const data = await apiLogin(email, password)
     const u = {
+      userid: data.userid,
       name: data.name || email.split('@')[0],
       email: data.email || email,
-      plan: data.plan || 'Gratuito',
+    }
+    sessionStorage.setItem('helpfy_user', JSON.stringify(u))
+    setUser(u)
+  }
+
+  const register = async (name, email, password) => {
+    const data = await apiRegister(name, email, password)
+    const u = {
+      userid: data.userid,
+      name,
+      email,
     }
     sessionStorage.setItem('helpfy_user', JSON.stringify(u))
     setUser(u)
@@ -22,12 +33,11 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     sessionStorage.removeItem('helpfy_user')
-    localStorage.removeItem('userId')
     setUser(null)
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   )

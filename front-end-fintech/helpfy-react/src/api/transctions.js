@@ -1,40 +1,19 @@
 import client from './httpClient'
 
-export const listTransactions = async (params = {}) => {
-  const { data } = await client.get('/api/transactions', { params })
+// GET /api/transactions/{userId}
+export const listTransactions = async (userId) => {
+  const { data } = await client.get(`/api/transactions/${userId}`)
   return data
 }
 
-export const listReceitas = async () => {
-  const { data } = await client.get('/api/transactions', { params: { tipo: 'RECEITA' } })
-  return data
-}
-
-export const listGastos = async () => {
-  const { data } = await client.get('/api/transactions', { params: { tipo: 'GASTO' } })
-  return data
-}
-
-export const listByCategories = async (categories) => {
-  const { data } = await client.get('/api/transactions', { params: { tipo: 'GASTO' } })
-  return data
-}
-
-export const getTransaction = async (id) => {
-  const { data } = await client.get(`/api/transactions/${id}`)
-  return data
-}
-
+// POST /api/transactions/create
 export const createTransaction = async (transaction) => {
-  const { data } = await client.post('/api/transactions', transaction)
+  const { data } = await client.post('/api/transactions/create', transaction)
   return data
 }
 
-export const updateTransaction = async (id, updates) => {
-  const { data } = await client.put(`/api/transactions/${id}`, updates)
+// GET /api/categories
+export const listCategories = async () => {
+  const { data } = await client.get('/api/categories')
   return data
-}
-
-export const deleteTransaction = async (id) => {
-  await client.delete(`/api/transactions/${id}`)
 }

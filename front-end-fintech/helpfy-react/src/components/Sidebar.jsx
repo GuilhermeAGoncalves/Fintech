@@ -3,7 +3,8 @@ import { useAuth } from '../context/AuthContext'
 import * as I from './Icons'
 
 const NAV = [
-  { to: '/', label: 'Dashboard', Icon: I.Home },
+  { to: '/app/dashboard', label: 'Dashboard', Icon: I.Home },
+  { to: '/app/config',    label: 'Configurações', Icon: I.Cog },
 ]
 
 export default function Sidebar() {
@@ -22,7 +23,6 @@ export default function Sidebar() {
         <NavLink
           key={to}
           to={to}
-          end={to === '/'}
           className={({ isActive }) => `side-item${isActive ? ' active' : ''}`}
         >
           <Icon className="side-ico" style={{ width: 18, height: 18 }} />
@@ -35,7 +35,7 @@ export default function Sidebar() {
           <span className="avatar">{initials}</span>
           <div>
             <div className="name">{user?.name}</div>
-            <div className="plan">Plano {user?.plan}</div>
+            <div className="plan">Plano {user?.plan || 'gratuito'}</div>
           </div>
           <button className="logout-btn" onClick={logout} title="Sair">
             <I.Logout style={{ width: 16, height: 16 }} />
