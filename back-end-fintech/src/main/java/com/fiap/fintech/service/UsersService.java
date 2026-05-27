@@ -1,5 +1,6 @@
 package com.fiap.fintech.service;
 
+import com.fiap.fintech.DTO.LoginDTO;
 import com.fiap.fintech.DTO.UsersResponseDTO;
 import com.fiap.fintech.model.Users;
 import com.fiap.fintech.repository.UsersRepository;
@@ -38,5 +39,13 @@ public class UsersService {
 
     public Boolean validateUserExist(String userId) {
         return usersRepository.existsById(userId);
+    }
+
+    public boolean validateUser(LoginDTO loginDTO) {
+        Optional<Users> user = usersRepository.findByEmail(loginDTO.email());
+        if (user.isEmpty()) {
+            return false;
+        }
+        return user.get().getPassword().equals(loginDTO.password());
     }
 }

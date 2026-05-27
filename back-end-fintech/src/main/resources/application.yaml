@@ -3,9 +3,9 @@ spring:
     name: "fintech-api"
 
   datasource:
-    url: jdbc:oracle:thin:@${DB_HOST}:${DB_PORT}/${DB_SID}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL
+    username: RM567351
+    password: 310896
     driver-class-name: oracle.jdbc.OracleDriver
     hikari:
       maximum-pool-size: 10
@@ -21,4 +21,3 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: none
-kind: Application

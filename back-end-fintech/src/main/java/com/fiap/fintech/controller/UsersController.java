@@ -19,9 +19,12 @@ public class UsersController {
     private final UsersService usersService;
 
     @PostMapping("/login")
-    public ResponseEntity<Users> validateUser(@RequestBody LoginDTO loginDTO) {
-        Users isValid = usersService.validateUser(loginDTO);
-        return ResponseEntity.ok(isValid);
+    public ResponseEntity<?> validateUser(@RequestBody LoginDTO loginDTO) {
+        boolean isValid = usersService.validateUser(loginDTO);
+        if (isValid) {
+            return ResponseEntity.ok().body("Login successful");
+        }
+        return ResponseEntity.status(401).body("Invalid email or password");
     }
 
     @PostMapping("/register")
